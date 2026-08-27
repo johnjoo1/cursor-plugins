@@ -116,17 +116,25 @@ Incidents also carry live links into Jira, ServiceNow and Linear. This has to wo
 > Enterprise and regulated buyers block here. Don't rush it even if you're running long.
 
 
-## 9 · Copilot: coverage without the project plan — 1:10
+## 9 · Copilot — 1:45
 
-The other half of the operational problem. Nearly every platform lead I've met has said some version of this to me: rolling out monitoring across ten thousand tables isn't a feature, it's a project, and we don't have the people for it.
+Copilot is the assistant surface across the product, and a fair amount of it is already live. So let me split this one: what you can do today, and what lands this quarter.
 
-That's fair, and it's what Copilot Phase II is for.
+Today, you can ask questions of your data in plain language and get answers that use everything Anomalo knows about it — not just the table, but the documentation, the lineage, the history.
 
-Table configuration through AIDA — describe in plain language how a table should be watched, which segments matter, what to ignore, how fresh it needs to be. AIDA configures it. No form per table.
+You can create custom data quality checks by describing them, instead of writing the SQL or filling in a form.
 
-And bulk check creation and cloning — create or clone checks across many tables in one instruction.
+And on any visualization or any check result, you can ask it to explain, dig deeper, investigate. That's usually where people actually start.
 
-Copilot gets coverage on. First Responder keeps it quiet. Two halves of the same job — and this is June's Co-Pilot Phase II landing.
+What lands this quarter is the part that scales. And it's worth saying why, because some version of this sentence has been said to me by nearly every platform lead I've met: rolling out monitoring across ten thousand tables isn't a feature, it's a project, and we don't have the people for it. That's fair.
+
+So — table configuration through AIDA. Describe how a table should be watched, which segments matter, what to ignore, how fresh it needs to be, and AIDA configures it. And bulk check creation and cloning, across many tables in one instruction.
+
+Copilot gets coverage on. First Responder keeps it quiet. Two halves of the same job — and those two on the right are June's Co-Pilot Phase II landing.
+
+> The ten-thousand-tables line is spoken, not on the slide. Quotes land better said than read — and if someone in the room has said it to you personally, use their words instead.
+
+> If anyone asks why conversational analytics appears here when slide 6 files it under Data Intelligence: AIDA is one assistant, and Data Intelligence is the capability it delivers. Copilot is the surface. Don't volunteer the distinction.
 
 
 ## 10 · Streaming connectors — 1:10
