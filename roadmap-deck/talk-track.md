@@ -136,19 +136,21 @@ I'm flagging that this isn't an agent feature on purpose. It's infrastructure �
 > The “not everything is an agent” line is doing real work. A roadmap that's seven-for-seven AI reads as bandwagon; this one item makes the other six more credible.
 
 
-## 11 · Autopilot: work you delegate once — 2:20
+## 11 · Autopilot: reporting nobody has to write — 2:20
 
-Into data intelligence. Autopilot is the newest thing on this deck, so let me be concrete.
+Into data intelligence. Autopilot.
 
-There's work you'd delegate to a competent analyst if you had one spare. A report that goes out every week. An analysis that should run whenever the data lands. Autopilot is how you hand that over once and stop thinking about it.
+Rather than walk you through the configuration, let me tell you what it gets you.
 
-You define four things: what the agent looks at, which tables or checks or domains are in scope, whether you want one report or one per item, and what sets it off.
+Monday's report is already written. Every domain owner opens a written summary instead of a dashboard — what broke last week, what changed, what deserves a look — in prose, by the agent. Nobody assembled it, and more to the point, nobody had to remember to.
 
-So — a weekly quality report for every domain. Subject is quality results, selection is all the tables in that domain, one report per domain, Monday morning. The agent writes it.
+It's timed to your data, not the clock. The analysis of last night's load exists because the load finished, not because it turned eight. When the pipeline runs late, the report waits. Anyone who has opened a scheduled report that confidently described data which hadn't landed yet knows why that matters.
 
-And this lands June's data intelligence promise, in June's own words: formatted recurring reports through conversation, iterate on templates with the agent, publish as HTML or slides. Conversational analytics and Global AIDA already shipped. That leaves natural-language dashboards as the one piece still to come.
+And this is the one that changes the arithmetic: one definition, every domain. You set the job up once and it fans out — a report per domain, per table, per data product, each written about its own data. That's coverage you'd otherwise staff with an analyst per team.
 
-> The data-aware trigger example — run the moment each table is fresh — is in the appendix. Pull it up for a technical room; it's the detail that lands with anyone who has fought cron against a late pipeline.
+It also lands June's data intelligence promise, in June's own words: formatted recurring reports through conversation, iterate on templates with the agent, publish as HTML or slides. Conversational analytics and Global AIDA already shipped. That leaves natural-language dashboards as the one piece still to come.
+
+> If someone asks how you set one up, the four-step definition is appendix A2. Don't volunteer it — the configuration surface is the least interesting thing about this product.
 
 
 ## 12 · Anomalo speaks agent. In both directions. — 2:15
@@ -228,17 +230,17 @@ The tension we're managing is flexibility versus clarity. Enough control to enco
 > This was in the main deck at 37 minutes. It's the best objection-handler you have for “it won't know what matters to us.”
 
 
-## 17 · APPENDIX · Not a scheduler. Not First Responder. — 2:00
+## 17 · APPENDIX · How an Autopilot job is defined — 2:00
 
-[Appendix — pull up for a technical room, or if someone conflates Autopilot with scheduling.]
+[Appendix — pull up if someone asks how a job is set up, or conflates Autopilot with scheduling.]
 
-Two separations worth making.
+Four things define a job: what the agent looks at, which tables or checks or domains are in scope, whether you want one report or one per item, and what sets it off.
 
-First, this is not a scheduler. The triggers watch your data, not the clock. Run when all the tables are fresh, or run per table the moment that table is fresh. A cron job fires at nine whether the pipeline landed or not, and you get a confident report about data that isn't there. Autopilot waits.
+The trigger is the part worth dwelling on. Run when all the tables are fresh, or run per table the moment that table is fresh. A cron job fires at nine whether the pipeline landed or not.
 
-Second, this is not First Responder in a different hat. First Responder answers failures nobody asked for — that's why it's in monitoring and quality. Autopilot produces analysis you commissioned — that's why it's in data intelligence.
+On placement: First Responder answers failures nobody asked for, which is why it sits in monitoring and quality. Autopilot produces analysis you commissioned, which is why it sits in data intelligence.
 
-> If pressed on why a freshness-triggered agent isn't a monitoring feature: the check that noticed is monitoring. What Autopilot adds is the written analysis on top.
+> If someone pushes on the freshness trigger: the check that noticed is monitoring. What Autopilot adds is the written analysis on top of it.
 
 
 ## 18 · APPENDIX · Anomalo's own data, without the pipeline — 1:15

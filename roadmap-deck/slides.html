@@ -643,22 +643,25 @@ strong{font-weight:600}
 <section class="slide light">
   <div class="toprow"><p class="mark">ANOMALO</p><p class="sect"><b>Data Intelligence</b></p></div>
   <div class="head-block">
-    <h1 class="t wide">Autopilot: work you delegate once</h1>
-    <p class="sub">Define an agentic job once. It writes the analysis itself, on your schedule or on your data.</p>
+    <h1 class="t wide">Autopilot: reporting nobody has to write</h1>
+    <p class="sub">Describe the job once, in conversation. From then on the agent produces the analysis itself.</p>
   </div>
   <div class="body">
-    <div class="flow">
-      <div class="step"><p class="lbl">Subject</p><p class="q">What should the agent look at?</p></div>
-      <div class="arw">&rarr;</div>
-      <div class="step"><p class="lbl">Selection</p><p class="q">Which tables, checks or domains?</p></div>
-      <div class="arw">&rarr;</div>
-      <div class="step"><p class="lbl">Fan-out</p><p class="q">One report covering all, or one per item?</p></div>
-      <div class="arw">&rarr;</div>
-      <div class="step"><p class="lbl">Trigger</p><p class="q">On a schedule, or when the data lands?</p></div>
+    <div class="grid g3">
+      <div class="panel">
+        <h3 class="ph">Monday's report is already written</h3>
+        <p class="pb">Every domain owner opens a written summary instead of a dashboard &mdash; what broke, what changed, what deserves attention, in prose. Nobody assembled it, and nobody had to remember to.</p>
+      </div>
+      <div class="panel">
+        <h3 class="ph">Timed to the data, not the clock</h3>
+        <p class="pb">The analysis of last night's load exists because the load finished, not because it turned eight o'clock. When the pipeline runs late, the report waits &mdash; instead of confidently describing data that isn't there yet.</p>
+      </div>
+      <div class="panel">
+        <h3 class="ph">One definition, every domain</h3>
+        <p class="pb">Set the job up once and it fans out &mdash; a report per domain, per table, per data product, each written about its own data. Coverage that would otherwise mean an analyst per team.</p>
+      </div>
     </div>
-    <div class="panel invert" style="margin-top:20px">
-      <p class="eyebrow" style="color:var(--signal)">A weekly data quality report for every domain</p>
-      <p class="pb" style="font-size:14.5px; margin-bottom:14px"><span class="mono" style="color:var(--signal)">Subject</span> quality results &nbsp;&middot;&nbsp; <span class="mono" style="color:var(--signal)">Selection</span> all tables in the domain &nbsp;&middot;&nbsp; <span class="mono" style="color:var(--signal)">Fan-out</span> one report per domain &nbsp;&middot;&nbsp; <span class="mono" style="color:var(--signal)">Trigger</span> Monday morning</p>
+    <div class="panel invert" style="margin-top:18px">
       <p class="pb" style="font-size:15px; line-height:1.55">This is June's Data Intelligence promise, landing: <em style="color:var(--tlight)">&ldquo;formatted, recurring reports through conversation &mdash; iterate on templates with the agent, publish as HTML or slides.&rdquo;</em> Conversational analytics and Global AIDA already shipped, which leaves natural-language dashboards as the one piece still to come.</p>
     </div>
   </div>
@@ -842,21 +845,30 @@ strong{font-weight:600}
 <!-- ============ A2 · AUTOPILOT DIFFERENTIATORS ============ -->
 <section class="slide light apx">
   <div class="toprow"><p class="mark">ANOMALO</p><p class="sect">Appendix &middot; <b>Data Intelligence</b></p></div>
-  <div class="head-block"><h1 class="t wide">Not a scheduler. Not First Responder.</h1></div>
+  <div class="head-block">
+    <h1 class="t wide">How an Autopilot job is defined</h1>
+    <p class="sub">And why it lives in Data Intelligence rather than Monitoring.</p>
+  </div>
   <div class="body">
-    <div class="grid g2">
-      <div class="panel">
-        <h3 class="ph" style="font-size:22px">Triggers that watch your data, not the clock</h3>
-        <p class="pb" style="font-size:15.5px">Run when all the tables are fresh. Or run for each table, the moment <em>that</em> table is fresh &mdash; subject is the table, selection is the checks on it, one run per table. A cron job fires whether the data arrived or not. Autopilot waits.</p>
-      </div>
-      <div class="panel">
-        <h3 class="ph" style="font-size:22px">Reactive versus proactive</h3>
-        <p class="pb" style="font-size:15.5px; margin-bottom:9px"><strong style="color:var(--tdark)">First Responder</strong> answers failures you never asked for. That's why it sits in Monitoring and Quality.</p>
-        <p class="pb" style="font-size:15.5px"><strong style="color:var(--tdark)">Autopilot</strong> produces analysis you commissioned. That's why it sits in Data Intelligence.</p>
-      </div>
+    <div class="flow">
+      <div class="step"><p class="lbl">Subject</p><p class="q">What should the agent look at?</p></div>
+      <div class="arw">&rarr;</div>
+      <div class="step"><p class="lbl">Selection</p><p class="q">Which tables, checks or domains?</p></div>
+      <div class="arw">&rarr;</div>
+      <div class="step"><p class="lbl">Fan-out</p><p class="q">One report covering all, or one per item?</p></div>
+      <div class="arw">&rarr;</div>
+      <div class="step"><p class="lbl">Trigger</p><p class="q">On a schedule, or when the data lands?</p></div>
     </div>
-    <div class="panel wash" style="margin-top:18px; padding:18px 24px">
-      <p class="pb" style="color:var(--tdark); font-size:15px">If someone asks why an agent triggered by freshness isn't a monitoring feature: the check that noticed is monitoring. What Autopilot adds is the written analysis on top of it.</p>
+    <div class="grid g2" style="margin-top:18px">
+      <div class="panel">
+        <h3 class="ph" style="font-size:20px">Triggers watch your data, not the clock</h3>
+        <p class="pb" style="font-size:14.5px">Run when all the tables are fresh, or run per table the moment <em>that</em> table is fresh &mdash; subject is the table, selection is the checks on it, one run per table. A cron job fires whether the data arrived or not.</p>
+      </div>
+      <div class="panel">
+        <h3 class="ph" style="font-size:20px">Reactive versus proactive</h3>
+        <p class="pb" style="font-size:14.5px; margin-bottom:8px"><strong style="color:var(--tdark)">First Responder</strong> answers failures nobody asked for &mdash; that's why it sits in Monitoring and Quality.</p>
+        <p class="pb" style="font-size:14.5px">If someone asks why a freshness-triggered agent isn't monitoring: the check that noticed is monitoring. What Autopilot adds is the written analysis on top of it.</p>
+      </div>
     </div>
   </div>
   <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
