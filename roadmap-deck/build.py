@@ -40,7 +40,7 @@ def parse_track(text):
         if one.startswith(">"):
             slides[cur][2].append(one.lstrip("> ").strip())
         else:
-            slides[cur][1].append(one)
+            slides[cur][1].append(one)  # "!" prefix is handled at render time
     return slides
 
 
@@ -68,7 +68,9 @@ def main():
     for i in range(1, n_slides + 1):
         dur, say, cue = track[i]
         parts = ['<b data-dur="%s"></b>' % dur]
-        parts += ['<p class="say">%s</p>' % esc(p) for p in say]
+        parts += ['<p class="%s">%s</p>' % ("demo" if p.startswith("!") else "say",
+                                             esc(p.lstrip("! ")))
+                  for p in say]
         if cue:
             parts.append('<p class="cuehd">Watch for</p>')
             parts += ['<p class="cue">%s</p>' % esc(c) for c in cue]

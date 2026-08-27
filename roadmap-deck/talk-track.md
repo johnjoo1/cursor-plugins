@@ -14,14 +14,14 @@ Format, and it is strict:
 
 Rebuild after editing: `python3 build.py`
 
-## 1 · Cover — 0:25
+## 1 · Cover — 0:30
 
-Thanks for the time. This is the same deck we brought you in June — same title, deliberately.
+Thanks for making the time. Same deck as June — same title, deliberately, because the story hasn't changed. What's changed is how much of it is real.
 
-Twenty-five minutes: what we said we'd build, what actually shipped, and where the quarter goes. If you kept the June deck, keep it open. Some of this is me marking our own homework.
+Twenty-five minutes, and I want to spend a good chunk of it showing you working software rather than slides. I'll start with what we promised you in June and what actually landed — including the two things that didn't.
 
 
-## 2 · Disclaimers — 0:15
+## 2 · Disclaimers — 0:20
 
 Housekeeping. This is confidential and it's directional — we ship weekly and we re-prioritize on what we hear from you, which is part of why I'm here. Nothing on the roadmap slide is a contractual commitment.
 
@@ -33,20 +33,24 @@ And the legal page. I'll let you read that on your own time.
 > Ten seconds. Don't read it aloud.
 
 
-## 4 · The world is changing — 1:15
+## 4 · The world is changing — 1:00
 
-The premise hasn't changed since June, so I'll be quick. Agents are doing the routine work of a data team already, and they don't just report — they act.
+The premise hasn't changed since June, so I'll be quick.
 
-Two consequences. Agents don't wait for clean data. A human who sees something odd stops and asks a question; an agent takes the number and moves on. Bad data goes from a slow embarrassment to a fast, silent one.
+Agents are already doing the routine work of a data team. And they don't just report — they act.
 
-And data quality stops being a reporting problem and becomes an AI infrastructure problem. Every agent you deploy inherits the trustworthiness of the data underneath it.
+Which means they don't wait for clean data. A human who sees something odd stops and asks. An agent takes the number and moves on.
 
-Hold on to that first box. I'll come back to it at the end.
+So bad data stops being a slow embarrassment and becomes a fast, silent one, at scale.
+
+And that turns data quality from a reporting problem into an AI infrastructure problem. Every agent you deploy inherits the trustworthiness of the data underneath it.
+
+Hold on to that. I'll come back to it at the end.
 
 > The callback lands on slide 13. Flag it here so it pays off there.
 
 
-## 5 · What we said in June. What shipped. — 2:30
+## 5 · What we said in June. What shipped. — 1:35
 
 Before I ask you to believe anything about this quarter, the scorecard on last quarter. Five things were on the June deck. Three shipped.
 
@@ -65,7 +69,7 @@ Three shipped, one early, one past spec. Two grew and are in flight. Those two l
 > If pressed on the First Responder slip: it had to get cheap enough to run on every alert. Dogfooding drove per-run cost down roughly fiftyfold. Technical rooms only.
 
 
-## 6 · Three products. One platform. — 2:00
+## 6 · Three products. One platform. — 1:00
 
 Same frame as June: three products, one platform. Seven things this quarter, and this is where they land.
 
@@ -80,7 +84,7 @@ Two things worth flagging before we start. Not all of this is AI — the streami
 > This is the map. Every slide from here carries its product in the top right corner, so nobody has to hold the structure in their head.
 
 
-## 7 · First Responder — 2:45
+## 7 · First Responder — 5:30
 
 First Responder. The problem isn't that you don't have alerts — it's that a person has to be the first pair of eyes on every one. That's the job we're taking away.
 
@@ -90,12 +94,14 @@ Then it investigates properly — traces root cause using lineage, check history
 
 Then it acts. Ignore it, if it's noise or a false positive. Escalate with the whole investigation attached, so the human starts where the agent finished. Or open the ServiceNow or Jira ticket itself.
 
+! DEMO — 4 min. Take one real failed check through the agent end to end: the alert, the agent's reasoning, the investigation it ran, and the incident it produced. Let them read the agent's actual write-up on screen. Do not narrate every field.
+
 What's new since June is that all of it lands inside an incident. Twenty checks failing across six tables over three days because of one upstream problem is one incident, not twenty alerts — grouped using lineage and your documentation. Noise gets silenced and auto-resolved. Everything else gets routed to the right person.
 
 > If asked about acting on the fix — re-run the pipeline, open a PR — hold it until slide 13, which is what makes it possible.
 
 
-## 8 · You stay in control of the agent — 2:00
+## 8 · You stay in control of the agent — 1:20
 
 The question you should all be asking is what happens when it's wrong. Three answers.
 
@@ -110,7 +116,7 @@ Incidents also carry live links into Jira, ServiceNow and Linear. This has to wo
 > Enterprise and regulated buyers block here. Don't rush it even if you're running long.
 
 
-## 9 · Copilot: coverage without the project plan — 2:00
+## 9 · Copilot: coverage without the project plan — 1:10
 
 The other half of the operational problem. Nearly every platform lead I've met has said some version of this to me: rolling out monitoring across ten thousand tables isn't a feature, it's a project, and we don't have the people for it.
 
@@ -123,7 +129,7 @@ And bulk check creation and cloning — create or clone checks across many table
 Copilot gets coverage on. First Responder keeps it quiet. Two halves of the same job — and this is June's Co-Pilot Phase II landing.
 
 
-## 10 · Streaming connectors — 1:20
+## 10 · Streaming connectors — 1:10
 
 One more in monitoring, and this one has nothing to do with AI.
 
@@ -136,7 +142,7 @@ I'm flagging that this isn't an agent feature on purpose. It's infrastructure �
 > The “not everything is an agent” line is doing real work. A roadmap that's seven-for-seven AI reads as bandwagon; this one item makes the other six more credible.
 
 
-## 11 · Autopilot: reporting nobody has to write — 2:20
+## 11 · Autopilot: reporting nobody has to write — 4:50
 
 Into data intelligence. Autopilot.
 
@@ -148,6 +154,8 @@ It's timed to your data, not the clock. The analysis of last night's load exists
 
 And this is the one that changes the arithmetic: one definition, every domain. You set the job up once and it fans out — a report per domain, per table, per data product, each written about its own data. That's coverage you'd otherwise staff with an analyst per team.
 
+! DEMO — 3 min. Show one Autopilot-generated report, in full, on screen. This slide makes three claims and offers no evidence for any of them; the report is the evidence. If there is only time for one demo in the whole deck, make it this one.
+
 It also lands June's data intelligence promise, in June's own words: formatted recurring reports through conversation, iterate on templates with the agent, publish as HTML or slides. Conversational analytics and Global AIDA already shipped. That leaves natural-language dashboards as the one piece still to come.
 
 > The slide is deliberately thin. Three headlines and a line each — the detail above is yours to say, not theirs to read. If you find yourself reading the slide aloud, you've lost the room.
@@ -155,7 +163,7 @@ It also lands June's data intelligence promise, in June's own words: formatted r
 > If someone asks how you set one up, the four-step definition is appendix A2. Don't volunteer it — the configuration surface is the least interesting thing about this product.
 
 
-## 12 · Anomalo speaks agent. In both directions. — 2:15
+## 12 · Anomalo speaks agent. In both directions. — 1:10
 
 Data context. And this is the slide I'd most want you to remember.
 
@@ -172,7 +180,7 @@ Both arrows are on one slide because they're the same capability pointed in two 
 > Slow down. This lands here, after four concrete products, because by now the question in the room is “how does any of this know anything about my company?”
 
 
-## 13 · What that unlocks — 2:20
+## 13 · What that unlocks — 1:55
 
 Concretely, in both directions.
 
@@ -189,7 +197,7 @@ And the payoff. Every agent in this deck gets better the day the left-hand side 
 > Full native-result-tables detail is in the appendix if anyone wants the before-and-after.
 
 
-## 14 · Roadmap — the next 90 days — 2:20
+## 14 · Roadmap — the next 90 days — 1:10
 
 Dates. Two caveats first. These are targets, not commitments — we ship weekly and we re-prioritize. And two items are carried over from June, First Responder and Copilot Phase II. They're marked as such. I'd rather flag that myself than have you find it.
 
@@ -206,7 +214,7 @@ The most useful thing you can do for me in the next few minutes is tell me which
 > The closing ask is the point of the slide. Don't skip it to save a minute.
 
 
-## 15 · One platform. Three products. — 0:50
+## 15 · One platform. Three products. — 0:40
 
 To land it.
 
@@ -219,7 +227,7 @@ What haven't I covered?
 > End on the question. The answer is worth more than anything else you'll get in the room.
 
 
-## 16 · APPENDIX · It follows your runbooks — 2:00
+## 16 · APPENDIX · It follows your runbooks — 1:10
 
 [Appendix — pull up if someone asks how the agent knows what matters at their company.]
 
@@ -232,7 +240,7 @@ The tension we're managing is flexibility versus clarity. Enough control to enco
 > This was in the main deck at 37 minutes. It's the best objection-handler you have for “it won't know what matters to us.”
 
 
-## 17 · APPENDIX · How an Autopilot job is defined — 2:00
+## 17 · APPENDIX · How an Autopilot job is defined — 1:05
 
 [Appendix — pull up if someone asks how a job is set up, or conflates Autopilot with scheduling.]
 
@@ -245,7 +253,7 @@ On placement: First Responder answers failures nobody asked for, which is why it
 > If someone pushes on the freshness trigger: the check that noticed is monitoring. What Autopilot adds is the written analysis on top of it.
 
 
-## 18 · APPENDIX · Anomalo's own data, without the pipeline — 1:15
+## 18 · APPENDIX · Anomalo's own data, without the pipeline — 1:05
 
 [Appendix — pull up if anyone asks about the batch exporter or querying their own quality history.]
 
