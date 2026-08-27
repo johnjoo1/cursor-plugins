@@ -150,6 +150,8 @@ And this is the one that changes the arithmetic: one definition, every domain. Y
 
 It also lands June's data intelligence promise, in June's own words: formatted recurring reports through conversation, iterate on templates with the agent, publish as HTML or slides. Conversational analytics and Global AIDA already shipped. That leaves natural-language dashboards as the one piece still to come.
 
+> The slide is deliberately thin. Three headlines and a line each — the detail above is yours to say, not theirs to read. If you find yourself reading the slide aloud, you've lost the room.
+
 > If someone asks how you set one up, the four-step definition is appendix A2. Don't volunteer it — the configuration surface is the least interesting thing about this product.
 
 
