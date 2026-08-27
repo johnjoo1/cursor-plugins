@@ -1,0 +1,987 @@
+<title>Self-Driving Data Roadmap</title>
+<style>/*__FONTS__*/</style>
+
+<style>
+:root{
+  --ink:#0C1728;
+  --ink2:#15243C;
+  --ink3:#1B2E4B;
+  --edge:#2A4062;
+  --paper:#EDF1F7;
+  --paper2:#FFFFFF;
+  --rule:#D3DCE9;
+  --tdark:#0E1B2C;
+  --tdark-mute:#54637E;
+  --tlight:#E7EDF7;
+  --tlight-mute:#93A1BC;
+  --signal:#63D8BC;
+  --signal-ink:#0A6553;
+  --signal-wash:#DFF3EE;
+  --brass:#E8A552;
+  --brass-ink:#8E5A14;
+  --brass-wash:#FAEEDC;
+
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ink);
+  color:var(--tlight);
+  font-family:var(--body);
+  overflow:hidden;
+  height:100vh;
+}
+
+/* ---------- stage ---------- */
+#viewport{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--ink);
+}
+#stage{
+  width:1280px; height:720px;
+  position:relative;
+  transform-origin:center center;
+  flex:0 0 auto;
+}
+.slide{
+  position:absolute; inset:0;
+  padding:56px 68px 62px;
+  display:none;
+  flex-direction:column;
+}
+.slide.on{display:flex}
+.slide.dark{background:var(--ink); color:var(--tlight)}
+.slide.light{background:var(--paper); color:var(--tdark)}
+
+/* ---------- chrome ---------- */
+.toprow{display:flex; justify-content:space-between; align-items:baseline; margin:0 0 26px}
+.mark{
+  font-family:var(--display); font-weight:700; font-size:11px;
+  letter-spacing:.22em; margin:0;
+}
+.dark .mark{color:var(--signal)}
+.light .mark{color:var(--signal-ink)}
+.sect{
+  font-family:var(--mono); font-weight:500; font-size:10.5px;
+  letter-spacing:.14em; text-transform:uppercase; margin:0; color:#7A8699;
+}
+.sect b{font-weight:600}
+.light .sect b{color:var(--signal-ink)}
+.dark .sect b{color:var(--signal)}
+
+.foot{
+  position:absolute; left:68px; right:68px; bottom:24px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.04em;
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+.dark .foot{color:#5D6D8C}
+.light .foot{color:#93A0B4}
+
+h1.t{
+  font-family:var(--display); font-weight:700;
+  font-size:40px; line-height:1.1; letter-spacing:-.018em;
+  margin:0; text-wrap:balance; max-width:19ch;
+}
+h1.t.wide{max-width:34ch}
+.sub{
+  font-size:18px; line-height:1.45; margin:14px 0 0; max-width:74ch;
+}
+.dark .sub{color:var(--tlight-mute)}
+.light .sub{color:var(--tdark-mute)}
+
+.eyebrow{
+  font-family:var(--mono); font-weight:600; font-size:10.5px;
+  letter-spacing:.15em; text-transform:uppercase; margin:0 0 10px;
+}
+
+.body{flex:1; display:flex; flex-direction:column; justify-content:center; min-height:0}
+.head-block{flex:0 0 auto}
+.head-block + .body{padding-top:30px}
+
+/* ---------- panels ---------- */
+.panel{border-radius:10px; padding:26px 28px}
+.light .panel{background:var(--paper2); box-shadow:0 1px 2px rgba(19,38,66,.06),0 6px 18px rgba(19,38,66,.07)}
+.dark  .panel{background:var(--ink2); border:1px solid var(--edge)}
+.panel.invert{background:var(--ink); color:var(--tlight); border:none; box-shadow:none}
+.light .panel.invert{background:var(--ink)}
+.panel.wash{background:var(--signal-wash); box-shadow:none}
+.panel.flat{background:transparent; border:1px solid var(--rule); box-shadow:none}
+
+.grid{display:grid; gap:18px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+
+h3.ph{
+  font-family:var(--display); font-weight:600; font-size:19px; line-height:1.2;
+  letter-spacing:-.01em; margin:0 0 10px; text-wrap:balance;
+}
+.dark .panel h3.ph{color:#fff}
+.pb{font-size:15px; line-height:1.5; margin:0}
+.light .pb{color:var(--tdark-mute)}
+.dark .pb{color:var(--tlight-mute)}
+.panel.invert .pb{color:var(--tlight-mute)}
+.panel.invert h3.ph{color:#fff}
+
+ul.pl{margin:0; padding:0; list-style:none}
+ul.pl li{
+  font-size:14.5px; line-height:1.45; margin:0 0 9px; padding-left:16px; position:relative;
+}
+ul.pl li:last-child{margin-bottom:0}
+ul.pl li::before{
+  content:""; position:absolute; left:0; top:.55em;
+  width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.45;
+}
+.light ul.pl{color:var(--tdark-mute)}
+.dark ul.pl{color:var(--tlight-mute)}
+
+.tag{
+  display:inline-block; font-family:var(--mono); font-weight:600;
+  font-size:9.5px; letter-spacing:.11em; text-transform:uppercase;
+  padding:4px 9px; border-radius:4px;
+}
+.tag.ship{background:var(--signal-wash); color:var(--signal-ink)}
+.tag.cat{background:#E2E8F2; color:#48566F}
+.tag.flight{background:var(--brass-wash); color:var(--brass-ink)}
+
+.num{font-family:var(--display); font-weight:700; font-size:13px; letter-spacing:.04em}
+.light .num{color:var(--signal-ink)}
+.dark .num{color:var(--signal)}
+
+.mono{font-family:var(--mono)}
+strong{font-weight:600}
+
+/* ---------- cover ---------- */
+.cover{display:grid; grid-template-columns:1.35fr 1fr; gap:56px; align-items:center; flex:1}
+.cover h1{
+  font-family:var(--display); font-weight:700; font-size:66px; line-height:1.02;
+  letter-spacing:-.03em; margin:0; color:#fff;
+}
+.cover .lede{
+  font-size:26px; line-height:1.25; margin:16px 0 0; color:var(--signal);
+  font-weight:400; letter-spacing:-.01em;
+}
+.cover .date{
+  font-family:var(--mono); font-size:12px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--tlight-mute); margin:32px 0 0;
+}
+.stack3{display:flex; flex-direction:column; gap:10px}
+.stack3 .bar{
+  border-radius:7px; padding:14px 18px;
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase;
+}
+.stack3 .bar.p{background:#17263E; color:#9DAAC6}
+.stack3 .bar.one{background:var(--signal); color:#063E34; font-weight:600; margin-top:6px}
+
+/* ---------- receipts ---------- */
+.rec{display:flex; flex-direction:column; gap:9px}
+.rec .row{
+  display:grid; grid-template-columns:250px 118px 1fr; gap:20px; align-items:center;
+  background:var(--paper2); border-radius:8px; padding:13px 20px;
+  box-shadow:0 1px 2px rgba(19,38,66,.05),0 4px 12px rgba(19,38,66,.05);
+}
+.rec .nm{font-family:var(--display); font-weight:600; font-size:15px; line-height:1.2; letter-spacing:-.005em}
+.rec .ds{font-size:13px; line-height:1.4; color:var(--tdark-mute)}
+.rec-note{margin:18px 0 0; font-size:15px; line-height:1.5; color:var(--tdark)}
+.dark .rec-note{color:var(--tlight)}
+
+/* ---------- anchor ---------- */
+.prods{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+.prod{
+  background:var(--ink2); border:1px solid var(--edge); border-radius:10px;
+  padding:24px 24px 20px; display:flex; flex-direction:column;
+}
+.prod h3{
+  font-family:var(--display); font-weight:600; font-size:21px; line-height:1.15;
+  letter-spacing:-.012em; margin:0 0 10px; color:#fff; text-wrap:balance;
+}
+.prod p{font-size:14.5px; line-height:1.45; margin:0 0 18px; color:var(--tlight-mute)}
+.prod .hr{height:1px; background:var(--edge); margin:auto 0 14px}
+.prod .lbl{
+  font-family:var(--mono); font-size:9px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--signal); margin:0 0 9px;
+}
+.prod ul{margin:0; padding:0; list-style:none}
+.prod li{
+  font-family:var(--display); font-weight:600; font-size:14.5px; color:#fff;
+  line-height:1.35; margin:0 0 7px; padding-left:15px; position:relative;
+}
+.prod li:last-child{margin:0}
+.prod li::before{
+  content:""; position:absolute; left:0; top:.5em;
+  width:5px; height:5px; border-radius:50%; background:var(--signal);
+}
+
+/* ---------- flow ---------- */
+.flow{display:flex; align-items:stretch; gap:0}
+.flow .step{flex:1; padding:20px 18px; background:var(--paper2); border-radius:9px;
+  box-shadow:0 1px 2px rgba(19,38,66,.05),0 4px 12px rgba(19,38,66,.05)}
+.flow .arw{
+  flex:0 0 34px; display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); color:#9FADC3; font-size:17px;
+}
+.flow .lbl{font-family:var(--mono); font-weight:600; font-size:10.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--signal-ink); margin:0 0 9px}
+.flow .q{font-size:14.5px; line-height:1.4; margin:0; color:var(--tdark)}
+
+/* ---------- mcp diagram ---------- */
+.mcp{display:grid; grid-template-columns:1fr 124px 1.05fr 124px 1fr; align-items:center; gap:0}
+.mcp .node{border-radius:10px; padding:22px; min-height:186px}
+.mcp .side{background:var(--ink2); border:1px solid var(--edge)}
+.mcp .core{background:var(--signal); color:#053B31; text-align:center; min-height:210px;
+  padding-left:10px; padding-right:10px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:9px}
+.mcp .core .nm{font-family:var(--display); font-weight:700; font-size:29px; letter-spacing:.02em}
+.mcp .core .l1{font-size:14.5px; color:#08483C}
+.mcp .core .l2{font-family:var(--mono); font-size:10.5px; letter-spacing:0; color:#0A5245; white-space:nowrap}
+.mcp .conn{display:flex; flex-direction:column; align-items:center; gap:8px}
+.mcp .conn .ar{font-size:26px; line-height:1}
+.mcp .conn .cl{font-family:var(--mono); font-size:10px; letter-spacing:.04em; text-align:center;
+  line-height:1.4; padding:0 8px}
+.mcp .node .hd{font-family:var(--mono); font-weight:600; font-size:10px; letter-spacing:.14em;
+  text-transform:uppercase; margin:0 0 14px}
+.mcp .node ul{margin:0; padding:0; list-style:none}
+.mcp .node li{font-size:14.5px; line-height:1.75; color:var(--tlight)}
+.mcp-claim{
+  margin:26px 0 0; text-align:center;
+  font-family:var(--display); font-weight:600; font-size:23px; letter-spacing:-.012em; color:#fff;
+}
+
+/* ---------- roadmap ---------- */
+.rm{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; align-items:start}
+.rm .col{background:var(--paper2); border-radius:10px; padding:20px 22px 18px;
+  box-shadow:0 1px 2px rgba(19,38,66,.05),0 4px 12px rgba(19,38,66,.05)}
+.rm .colhd{font-family:var(--display); font-weight:600; font-size:16px; letter-spacing:-.01em;
+  margin:0 0 4px; color:var(--tdark)}
+.rm .colsub{font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--signal-ink); margin:0 0 14px}
+.rm .it{padding:12px 0 0; border-top:1px solid var(--rule); margin-top:12px}
+.rm .it:first-of-type{border-top:none; margin-top:0; padding-top:0}
+.rm .top{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+.rm h3{font-family:var(--display); font-weight:600; font-size:15px; margin:0; letter-spacing:-.008em}
+.rm .when{font-family:var(--mono); font-size:10px; letter-spacing:.05em; color:var(--tdark-mute);
+  white-space:nowrap}
+.rm p{margin:5px 0 0; font-size:12.5px; line-height:1.4; color:var(--tdark-mute)}
+.rm .carry{font-family:var(--mono); font-size:9px; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--brass-ink); margin-top:6px; display:flex; align-items:center; gap:6px}
+.rm .carry::before{content:""; width:5px; height:5px; border-radius:50%;
+  background:var(--brass); flex:0 0 auto}
+.rm .later{margin-top:14px; padding-top:12px; border-top:1px dashed var(--rule);
+  font-size:12.5px; line-height:1.4; color:#8A94A8}
+
+/* ---------- close ---------- */
+.close{display:grid; grid-template-columns:1.25fr 1fr; gap:56px; align-items:center; flex:1}
+.close h1{font-family:var(--display); font-weight:700; font-size:52px; line-height:1.08;
+  letter-spacing:-.028em; margin:0; color:#fff}
+.close .p{margin:26px 0 0; font-size:17px; line-height:1.5; color:var(--tlight-mute); max-width:44ch}
+.close .stack{display:flex; flex-direction:column; gap:12px}
+.close .pr{background:var(--ink2); border:1px solid var(--edge); border-radius:9px; padding:15px 20px}
+.close .pr .t{font-family:var(--display); font-weight:600; font-size:16px; color:#fff}
+.close .pr .s{font-size:13.5px; color:var(--tlight-mute); margin-top:3px}
+
+/* ---------- legal ---------- */
+.legal{font-size:14px; line-height:1.6; color:var(--tdark-mute)}
+.legal p{margin:0 0 13px} .legal p:last-child{margin:0}
+.legal.small{font-size:11.5px; line-height:1.62}
+
+/* ---------- nav ---------- */
+#rail{position:fixed; left:0; right:0; bottom:0; height:3px; background:rgba(255,255,255,.07); z-index:40}
+#rail i{display:block; height:100%; background:var(--signal); transition:width .22s ease}
+#hud{
+  position:fixed; right:16px; top:14px; z-index:41;
+  font-family:var(--mono); font-size:11px; color:#7A88A4;
+  display:flex; gap:14px; align-items:center;
+}
+#hud button{
+  font:inherit; color:#7A88A4; background:transparent; border:1px solid #2B3A55;
+  border-radius:5px; padding:3px 9px; cursor:pointer;
+}
+#hud button:hover,#hud button:focus-visible{color:var(--signal); border-color:var(--signal); outline:none}
+#count{font-variant-numeric:tabular-nums}
+#notes{
+  position:fixed; left:0; right:0; bottom:0; z-index:42;
+  background:#08111E; border-top:1px solid #21324C;
+  padding:18px 26px 24px; max-height:56vh; overflow-y:auto;
+  font-size:15px; line-height:1.62; color:#C3CEE2;
+  transform:translateY(101%); transition:transform .2s ease;
+}
+#notes.up{transform:translateY(0)}
+#notes h4{
+  font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--signal); margin:0 0 12px; display:flex; gap:12px; align-items:baseline;
+}
+#notes h4 span{color:#6E7C99; letter-spacing:.08em}
+#notes p{margin:0 0 11px; max-width:104ch}
+#notes p:last-child{margin:0}
+#notes .say{color:#DCE5F3}
+#notes .cuehd{
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--brass); margin:18px 0 7px;
+}
+#notes .cue{color:#93A1BC; font-size:13.5px; line-height:1.55; padding-left:14px;
+  border-left:1px solid #2B3A55}
+.zone{position:fixed; top:0; bottom:0; width:16%; z-index:30; cursor:pointer}
+.zone.l{left:0} .zone.r{right:0}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+@media print{
+  @page{size:1280px 720px; margin:0}
+  body,#viewport{overflow:visible; height:auto; display:block}
+  #stage{width:1280px; height:auto; transform:none!important}
+  .slide{display:flex!important; position:relative; inset:auto;
+    width:1280px; height:720px; break-after:page; page-break-after:always}
+  #rail,#hud,#notes,.zone{display:none!important}
+}
+</style>
+
+<div id="viewport">
+<div id="stage">
+
+<!-- ============ 1 · COVER ============ -->
+<section class="slide dark on">
+  <div class="toprow"><p class="mark">ANOMALO</p></div>
+  <div class="cover">
+    <div>
+      <h1>Self-Driving Data</h1>
+      <p class="lede">and the Agentic Product Roadmap</p>
+      <p class="date">August 2026 &middot; Customer &amp; Prospect Briefing</p>
+    </div>
+    <div class="stack3">
+      <div class="bar p">Data Monitoring and Quality</div>
+      <div class="bar p">Data Intelligence</div>
+      <div class="bar p">Data Context</div>
+      <div class="bar one">One platform</div>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 2 · DISCLAIMERS ============ -->
+<section class="slide light">
+  <div class="toprow"><p class="mark">ANOMALO</p></div>
+  <div class="head-block"><h1 class="t">Disclaimers</h1></div>
+  <div class="body">
+    <div class="panel">
+      <div class="legal">
+        <p>This roadmap is informational and confidential. It is intended to give our customers and prospects an idea of our product direction over the next few quarters. Please do not share it externally.</p>
+        <p>All of the following is subject to change. Anomalo follows agile product and engineering methodology, and new releases are delivered every week.</p>
+        <p>We regularly change priorities based on feedback from customers and prospects, and we prioritize the feature requests that will satisfy the most customers.</p>
+        <p>The following discusses major initiatives only.</p>
+        <p>We heartily welcome feedback &mdash; on both the major initiatives and the minor feature requests.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 3 · FORWARD-LOOKING ============ -->
+<section class="slide light">
+  <div class="toprow"><p class="mark">ANOMALO</p></div>
+  <div class="head-block"><h1 class="t wide">Forward-Looking Statements</h1></div>
+  <div class="body">
+    <div class="panel">
+      <div class="legal small">
+        <p>This presentation includes predictions, analyses, estimates, and other information concerning revenues, income, earnings, and operations that might be considered forward-looking under Section 27A of the Securities Act of 1933 and Section 21E of the Securities Exchange Act of 1934.</p>
+        <p>Although these forward-looking statements represent our current judgment on what the future holds, they are subject to risks and uncertainties that could cause actual results to differ materially. They include without limitation statements relating to our business, future developments, future products and features, our strategies and operations, risks, and trends. We will attempt to present some of the important factors relating to our business that may affect our predictions, including without limitation changing market conditions, the emergence of competitors and competitive products, and technological issues in product development. But there may be other factors that may arise, including without limitation changes in regulatory conditions, domestic and international events, and security or service incidents that impact our business or reputation.</p>
+        <p>Further, our past growth is not indicative of future growth because of these and other conditions. You are cautioned not to rely on any forward-looking statements, which reflect our opinions only as of the date of this presentation and should not substitute for your own experience, analysis, and independent research. We will not revise or publicly release the results of any revision to these forward-looking statements in light of new information, future events, or changes in circumstances. Any discussion or information about our roadmap or product development is based on our opinion as of this date and subject to change at any time without notice.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 4 · WORLD IS CHANGING ============ -->
+<section class="slide dark">
+  <div class="toprow"><p class="mark">ANOMALO</p></div>
+  <div class="head-block">
+    <h1 class="t wide">The world is changing</h1>
+    <p class="sub" style="color:var(--signal); font-size:20px; max-width:64ch">Autonomous AI agents will soon &mdash; if not already &mdash; perform all routine data team work. And act on it.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2">
+      <div class="panel">
+        <p class="num" style="margin:0 0 14px">01</p>
+        <h3 class="ph" style="font-size:24px">Agents don't wait for clean data</h3>
+        <p class="pb" style="font-size:16px">Autonomous systems could be acting on your data right now. Bad data in means bad decisions out &mdash; silently, and at scale.</p>
+      </div>
+      <div class="panel">
+        <p class="num" style="margin:0 0 14px">02</p>
+        <h3 class="ph" style="font-size:24px">Data quality is now an AI infrastructure problem</h3>
+        <p class="pb" style="font-size:16px">Every agent in your stack is only as trustworthy as the data it runs on. The foundation has to be right before anything above it can be.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 5 · RECEIPTS ============ -->
+<section class="slide light">
+  <div class="toprow"><p class="mark">ANOMALO</p></div>
+  <div class="head-block"><h1 class="t wide">What we said in June. What shipped.</h1></div>
+  <div class="body">
+    <div class="rec">
+      <div class="row">
+        <span class="nm">High-Cardinality Entity check</span>
+        <span><span class="tag ship">Shipped</span></span>
+        <span class="ds">Per-segment check logic applied to entities with thousands of segments &mdash; new algorithms, and a results interface built for that scale.</span>
+      </div>
+      <div class="row">
+        <span class="nm">Lineage expansion</span>
+        <span><span class="tag ship">Shipped +</span></span>
+        <span class="ds">Column-level lineage for Snowflake, Databricks <strong>and BigQuery</strong> &mdash; BigQuery was not in the June commitment &mdash; plus an OpenLineage connector that describes lineage <em>across</em> data sources.</span>
+      </div>
+      <div class="row">
+        <span class="nm">Global AIDA<br><span style="font-weight:400; font-size:13.5px; color:var(--tdark-mute)">Conversational analytics</span></span>
+        <span><span class="tag ship">Shipped early</span></span>
+        <span class="ds">June put this in Q3. It landed ahead of that. Ask AIDA anything and it finds the right tables to answer.</span>
+      </div>
+      <div class="row">
+        <span class="nm">AI Co-Pilot Phase II</span>
+        <span><span class="tag flight">In flight</span></span>
+        <span class="ds">In build now. Scope grew: table configuration as well as bulk check creation.</span>
+      </div>
+      <div class="row">
+        <span class="nm">Data Issue First Responder</span>
+        <span><span class="tag flight">In flight</span></span>
+        <span class="ds">In build now, and materially bigger than the June slide described: First Responder <em>plus</em> Incidents.</span>
+      </div>
+    </div>
+    <p class="rec-note"><strong style="color:var(--signal-ink)">Three shipped</strong> &mdash; one of them early, one of them past what we promised. <strong style="color:var(--brass-ink)">Two grew in scope</strong> and are in build now. Those two lead this quarter.</p>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 6 · ANCHOR ============ -->
+<section class="slide dark">
+  <div class="toprow"><p class="mark">ANOMALO</p></div>
+  <div class="head-block">
+    <h1 class="t wide">Three products. One platform.</h1>
+    <p class="sub">Same frame as June. Here is where this quarter's work lands.</p>
+  </div>
+  <div class="body">
+    <div class="prods">
+      <div class="prod">
+        <h3>Data Monitoring and Quality</h3>
+        <p>Know your data is right &mdash; automatically, in natural language, at any scale. No thresholds, no rules required.</p>
+        <div class="hr"></div>
+        <p class="lbl">This quarter</p>
+        <ul><li>First Responder + Incidents</li><li>Copilot Phase II</li><li>Streaming connectors</li></ul>
+      </div>
+      <div class="prod">
+        <h3>Data Intelligence</h3>
+        <p>Conversational analytics and natural-language reporting on your own data. Global AIDA is live today.</p>
+        <div class="hr"></div>
+        <p class="lbl">This quarter</p>
+        <ul><li>Autopilot</li></ul>
+      </div>
+      <div class="prod">
+        <h3>Data Context</h3>
+        <p>Documentation, insights and lineage &mdash; everything your team and your agents look up to understand a dataset.</p>
+        <div class="hr"></div>
+        <p class="lbl">This quarter</p>
+        <ul><li>Anomalo MCP</li><li>MCP Connectors</li><li>Native result tables</li></ul>
+      </div>
+    </div>
+    <p class="rec-note" style="font-size:15px">We'll go in that order. Not all of it is AI &mdash; and Data Context is last because it's where “one platform” stops being an architecture diagram.</p>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 7 · FIRST RESPONDER ============ -->
+<section class="slide light">
+  <div class="toprow"><p class="mark">ANOMALO</p><p class="sect"><b>Data Monitoring and Quality</b></p></div>
+  <div class="head-block">
+    <h1 class="t wide">First Responder</h1>
+    <p class="sub">Humans shouldn't be the first to look at an alert. AI should.</p>
+  </div>
+  <div class="body">
+    <div class="grid g3">
+      <div class="panel">
+        <p class="num" style="margin:0 0 8px">01</p>
+        <h3 class="ph">Judge</h3>
+        <ul class="pl">
+          <li>Assess severity, and whether the alert is even real</li>
+          <li>Run initial investigations automatically</li>
+          <li>Score priority against your defined runbooks</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <p class="num" style="margin:0 0 8px">02</p>
+        <h3 class="ph">Investigate</h3>
+        <ul class="pl">
+          <li>Trace to root cause using all available context</li>
+          <li>Pull lineage, check history, query live data</li>
+          <li>Cross-reference prior resolved issues</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <p class="num" style="margin:0 0 8px">03</p>
+        <h3 class="ph">Act</h3>
+        <ul class="pl">
+          <li>Ignore it &mdash; noise, or a false positive</li>
+          <li>Escalate to a human with full context attached</li>
+          <li>Open a ServiceNow or Jira ticket automatically</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel invert" style="margin-top:18px; display:grid; grid-template-columns:290px 1fr; gap:28px; align-items:center">
+      <h3 class="ph" style="color:var(--signal); margin:0; font-size:20px">Incidents are the envelope</h3>
+      <p class="pb" style="font-size:15px">Every action the agent takes lands inside an incident &mdash; grouped across checks, tables and days using lineage and documentation; silenced and auto-resolved where severity and past triage notes say it's noise; routed to the right human when it isn't.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 8 · TRUST ============ -->
+<section class="slide light">
+  <div class="toprow"><p class="mark">ANOMALO</p><p class="sect"><b>Data Monitoring and Quality</b></p></div>
+  <div class="head-block">
+    <h1 class="t wide">You stay in control of the agent</h1>
+    <p class="sub">How humans validate, audit, and override what it decides.</p>
+  </div>
+  <div class="body">
+    <div class="grid g3">
+      <div class="panel">
+        <h3 class="ph">See what it silenced</h3>
+        <ul class="pl">
+          <li>A daily or weekly digest of every alert the agent silenced or re-routed</li>
+          <li>In-app views filtered by agent action and status</li>
+        </ul>
+        <p style="margin:14px 0 0; font-size:13.5px; font-style:italic; color:var(--signal-ink); line-height:1.4">Catches over-aggressive noise reduction before you feel it</p>
+      </div>
+      <div class="panel">
+        <h3 class="ph">Override any decision</h3>
+        <ul class="pl">
+          <li>Change status, resolution or grouping by hand at any time</li>
+          <li>Anything the agent can do to an incident, a human or an API call can undo</li>
+        </ul>
+        <p style="margin:14px 0 0; font-size:13.5px; font-style:italic; color:var(--signal-ink); line-height:1.4">No decision the agent makes is final</p>
+      </div>
+      <div class="panel">
+        <h3 class="ph">It learns from you</h3>
+        <ul class="pl">
+          <li>Comment with feedback and the agent takes it on board</li>
+          <li>An override becomes memory, and goes into the runbook automatically</li>
+        </ul>
+        <p style="margin:14px 0 0; font-size:13.5px; font-style:italic; color:var(--signal-ink); line-height:1.4">The system gets smarter with every correction</p>
+      </div>
+    </div>
+    <div class="panel wash" style="margin-top:18px; padding:18px 24px">
+      <p class="pb" style="color:var(--tdark); font-size:15px">Incidents carry live links into the tools you already run on &mdash; <strong>Jira, ServiceNow and Linear</strong> &mdash; with status visible from inside Anomalo. The agent works in your incident process, not beside it.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 9 · COPILOT ============ -->
+<section class="slide light">
+  <div class="toprow"><p class="mark">ANOMALO</p><p class="sect"><b>Data Monitoring and Quality</b></p></div>
+  <div class="head-block"><h1 class="t wide">Copilot: coverage without the project plan</h1></div>
+  <div class="body">
+    <div style="display:grid; grid-template-columns:400px 1fr; gap:22px">
+      <div class="panel invert" style="display:flex; flex-direction:column; justify-content:center">
+        <p style="font-family:var(--display); font-weight:700; font-size:56px; line-height:.7; color:var(--signal); margin:0 0 18px">&ldquo;</p>
+        <p style="font-size:21px; line-height:1.35; color:#fff; margin:0; letter-spacing:-.012em">Rolling out monitoring across ten thousand tables isn't a feature. It's a project, and we don't have the people for it.</p>
+        <p style="font-size:13.5px; color:var(--tlight-mute); margin:18px 0 0; font-style:italic">&mdash; every data platform lead, eventually</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:16px">
+        <div class="panel">
+          <p class="num" style="margin:0 0 8px">01</p>
+          <h3 class="ph">Table configuration via AIDA</h3>
+          <p class="pb">Describe in plain language how a table should be monitored &mdash; the segments that matter, what to ignore, how fresh it needs to be &mdash; and AIDA configures it.</p>
+        </div>
+        <div class="panel">
+          <p class="num" style="margin:0 0 8px">02</p>
+          <h3 class="ph">Bulk check creation and cloning</h3>
+          <p class="pb">Create or clone checks across many tables in one instruction, instead of one form at a time. The checks you'd have written by hand, written for you.</p>
+        </div>
+      </div>
+    </div>
+    <div class="panel wash" style="margin-top:18px; padding:16px 24px">
+      <p class="pb" style="color:var(--tdark); font-size:15px"><strong style="color:var(--signal-ink)">Copilot gets coverage on. First Responder keeps it quiet.</strong> Two halves of the same job &mdash; and this is June's AI Co-Pilot Phase II landing.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 10 · STREAMING CONNECTORS ============ -->
+<section class="slide light">
+  <div class="toprow"><p class="mark">ANOMALO</p><p class="sect"><b>Data Monitoring and Quality</b></p></div>
+  <div class="head-block">
+    <h1 class="t wide">Streaming connectors</h1>
+    <p class="sub">Monitor the stream itself &mdash; not the table it eventually becomes.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2">
+      <div class="panel flat">
+        <p class="eyebrow" style="color:var(--tdark-mute)">Today</p>
+        <h3 class="ph" style="font-size:21px">Your detection floor is your load frequency</h3>
+        <p class="pb" style="font-size:15px">Data that arrives as a stream is only monitorable once it lands somewhere we can query. If it lands hourly, you cannot find out in less than an hour. If it lands overnight, you find out tomorrow &mdash; and by then it has been read.</p>
+      </div>
+      <div class="panel invert">
+        <p class="eyebrow" style="color:var(--signal)">This quarter</p>
+        <h3 class="ph" style="font-size:21px">Connect straight to the source</h3>
+        <ul class="pl" style="font-size:15px; color:var(--tlight)">
+          <li>Direct connectors to Kafka, Kinesis and Pub/Sub</li>
+          <li>Checks evaluated against the stream, over windows you define</li>
+          <li>Failures raise the same incidents, handled by the same First Responder</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel wash" style="margin-top:18px; padding:18px 24px">
+      <p class="pb" style="color:var(--tdark); font-size:15px"><strong style="color:var(--signal-ink)">Not everything this quarter is an agent.</strong> This is infrastructure &mdash; the kind that decides whether the agents have anything current to look at.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+<!-- ============ 11 · AUTOPILOT ============ -->
+<section class="slide light">
+  <div class="toprow"><p class="mark">ANOMALO</p><p class="sect"><b>Data Intelligence</b></p></div>
+  <div class="head-block">
+    <h1 class="t wide">Autopilot: work you delegate once</h1>
+    <p class="sub">Define an agentic job once. It writes the analysis itself, on your schedule or on your data.</p>
+  </div>
+  <div class="body">
+    <div class="flow">
+      <div class="step"><p class="lbl">Subject</p><p class="q">What should the agent look at?</p></div>
+      <div class="arw">&rarr;</div>
+      <div class="step"><p class="lbl">Selection</p><p class="q">Which tables, checks or domains?</p></div>
+      <div class="arw">&rarr;</div>
+      <div class="step"><p class="lbl">Fan-out</p><p class="q">One report covering all, or one per item?</p></div>
+      <div class="arw">&rarr;</div>
+      <div class="step"><p class="lbl">Trigger</p><p class="q">On a schedule, or when the data lands?</p></div>
+    </div>
+    <div class="panel invert" style="margin-top:20px">
+      <p class="eyebrow" style="color:var(--signal)">A weekly data quality report for every domain</p>
+      <p class="pb" style="font-size:14.5px; margin-bottom:14px"><span class="mono" style="color:var(--signal)">Subject</span> quality results &nbsp;&middot;&nbsp; <span class="mono" style="color:var(--signal)">Selection</span> all tables in the domain &nbsp;&middot;&nbsp; <span class="mono" style="color:var(--signal)">Fan-out</span> one report per domain &nbsp;&middot;&nbsp; <span class="mono" style="color:var(--signal)">Trigger</span> Monday morning</p>
+      <p class="pb" style="font-size:15px; line-height:1.55">This is June's Data Intelligence promise, landing: <em style="color:var(--tlight)">&ldquo;formatted, recurring reports through conversation &mdash; iterate on templates with the agent, publish as HTML or slides.&rdquo;</em> Conversational analytics and Global AIDA already shipped, which leaves natural-language dashboards as the one piece still to come.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 12 · MCP DIAGRAM ============ -->
+<section class="slide dark">
+  <div class="toprow"><p class="mark">ANOMALO</p><p class="sect"><b>Data Context</b></p></div>
+  <div class="head-block">
+    <h1 class="t wide">Anomalo speaks agent. In both directions.</h1>
+    <p class="sub">One protocol, two directions. This is where “one platform” stops being an architecture diagram.</p>
+  </div>
+  <div class="body">
+    <div class="mcp">
+      <div class="node side">
+        <p class="hd" style="color:var(--brass)">Your systems</p>
+        <ul><li>Confluence and wikis</li><li>Data catalogs</li><li>GitHub</li><li>Jira and ServiceNow</li></ul>
+      </div>
+      <div class="conn">
+        <span class="ar" style="color:var(--brass)">&rarr;</span>
+        <span class="cl" style="color:var(--brass)">MCP Connectors<br>we read yours</span>
+      </div>
+      <div class="node core">
+        <span class="nm">ANOMALO</span>
+        <span class="l1">Quality &middot; Context &middot; Intelligence</span>
+        <span class="l2">First Responder &middot; Copilot &middot; Autopilot</span>
+      </div>
+      <div class="conn">
+        <span class="ar" style="color:var(--signal)">&rarr;</span>
+        <span class="cl" style="color:var(--signal)">Anomalo MCP<br>you read ours</span>
+      </div>
+      <div class="node side">
+        <p class="hd" style="color:var(--signal)">Your agents</p>
+        <ul><li>Claude and Cursor</li><li>Internal copilots</li><li>Orchestration and pipelines</li><li>Anything that speaks MCP</li></ul>
+      </div>
+    </div>
+    <p class="mcp-claim">The same protocol that lets you consume Anomalo lets Anomalo consume you.</p>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 13 · WHAT THAT UNLOCKS ============ -->
+<section class="slide light">
+  <div class="toprow"><p class="mark">ANOMALO</p><p class="sect"><b>Data Context</b></p></div>
+  <div class="head-block"><h1 class="t wide">What that unlocks</h1></div>
+  <div class="body">
+    <div class="grid g2">
+      <div class="panel">
+        <p class="eyebrow" style="color:var(--signal-ink)">Anomalo MCP &mdash; your agents ask us</p>
+        <ul class="pl" style="font-size:15px">
+          <li><strong style="color:var(--tdark)">Quality status on demand.</strong> Any agent can ask whether a dataset is healthy right now &mdash; before it trains on it, reports on it, or acts on it.</li>
+          <li><strong style="color:var(--tdark)">Documentation and lineage, callable.</strong> Your agents inherit everything the context layer already knows.</li>
+          <li><strong style="color:var(--tdark)">Global AIDA, domain-scoped.</strong> The conversational analytics that just shipped, reachable from Claude, Cursor or your own copilot.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <p class="eyebrow" style="color:var(--brass-ink)">MCP Connectors &mdash; we read yours</p>
+        <ul class="pl" style="font-size:15px">
+          <li><strong style="color:var(--tdark)">Wikis.</strong> Confluence and the rest &mdash; the business definitions nobody put in the warehouse.</li>
+          <li><strong style="color:var(--tdark)">Catalogs.</strong> Whatever you already treat as the source of truth for ownership and meaning.</li>
+          <li><strong style="color:var(--tdark)">Code.</strong> GitHub, so the agent can read the transformation that broke, not just the symptom.</li>
+          <li><strong style="color:var(--tdark)">Ticketing.</strong> Jira and ServiceNow, so incidents live in the process your team already runs.</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin:14px 0 0; font-size:13.5px; line-height:1.45; color:var(--tdark-mute)"><strong style="color:var(--tdark)">Also landing in Data Context:</strong> native result tables &mdash; Anomalo's own check results and incidents, queryable, so any agent can look them up the way it would a catalog.</p>
+    <div class="panel invert" style="margin-top:14px">
+      <p class="pb" style="font-size:15.5px; line-height:1.55"><strong style="color:#fff">Every agent in this deck gets better the day the left-hand side exists.</strong> Documentation written from your wiki instead of from column names. Triage that cites your runbook because it read your runbook. And &mdash; remember how we opened &mdash; agents don't wait for clean data. This is the mechanism that fixes that: not a dashboard someone checks first, but a question your agent asks automatically, every time.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 14 · ROADMAP ============ -->
+<section class="slide light">
+  <div class="toprow"><p class="mark">ANOMALO</p></div>
+  <div class="head-block"><h1 class="t wide">Roadmap &mdash; the next 90 days</h1></div>
+  <div class="body">
+    <div class="rm">
+      <div class="col">
+        <p class="colhd">Data Monitoring and Quality</p>
+        <p class="colsub">Three this quarter</p>
+        <div class="it">
+          <div class="top"><h3>First Responder + Incidents</h3><span class="when">Sep 2026</span></div>
+          <p>AI triages every alert before it reaches a human &mdash; grouping, silencing, routing and investigating, inside an incident you control.</p>
+          <span class="carry">Carried over from June</span>
+        </div>
+        <div class="it">
+          <div class="top"><h3>Copilot Phase II</h3><span class="when">Sep 2026</span></div>
+          <p>Configure tables and bulk create or clone checks through natural language with AIDA.</p>
+          <span class="carry">Carried over from June</span>
+        </div>
+        <div class="it">
+          <div class="top"><h3>Streaming connectors</h3><span class="when">Nov 2026</span></div>
+          <p>Connect directly to Kafka, Kinesis and Pub/Sub, and check the stream rather than waiting for it to land.</p>
+        </div>
+      </div>
+      <div class="col">
+        <p class="colhd">Data Intelligence</p>
+        <p class="colsub">One this quarter</p>
+        <div class="it">
+          <div class="top"><h3>Autopilot</h3><span class="when">Oct 2026</span></div>
+          <p>Delegate standing agentic work &mdash; recurring reports and analyses, triggered by the clock or by your data landing.</p>
+        </div>
+        <p class="later"><strong>Next quarter:</strong> natural-language dashboards &mdash; the one piece of the June vision still outstanding.</p>
+      </div>
+      <div class="col">
+        <p class="colhd">Data Context</p>
+        <p class="colsub">Three this quarter</p>
+        <div class="it">
+          <div class="top"><h3>Anomalo MCP</h3><span class="when">Oct 2026</span></div>
+          <p>Your agents query Anomalo for quality status, documentation and lineage. Global AIDA, domain-scoped, over MCP.</p>
+        </div>
+        <div class="it">
+          <div class="top"><h3>MCP Connectors</h3><span class="when">Nov 2026</span></div>
+          <p>Anomalo reads your wikis, catalogs, code and ticketing, so every agent works from your institutional knowledge.</p>
+        </div>
+        <div class="it">
+          <div class="top"><h3>Native result tables</h3><span class="when">Nov 2026</span></div>
+          <p>Check results, incidents and metadata queryable inside Anomalo &mdash; context any agent can look up.</p>
+        </div>
+      </div>
+    </div>
+    <p class="rec-note" style="font-size:14px"><strong>Dates are targets, not commitments.</strong> <span style="color:var(--tdark-mute)">Two items are carried over from June and marked as such, both in build now. Seven items, three products &mdash; and one of them has nothing to do with AI.</span></p>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ 15 · CLOSE ============ -->
+<section class="slide dark">
+  <div class="toprow"><p class="mark">ANOMALO</p></div>
+  <div class="close">
+    <div>
+      <h1>One platform.<br>Three products.<br>Now it drives.</h1>
+      <p class="p">We heartily welcome feedback &mdash; on the major initiatives and the minor requests alike.</p>
+    </div>
+    <div class="stack">
+      <div class="pr"><div class="t">Data Monitoring and Quality</div><div class="s">It handles the alert before you do</div></div>
+      <div class="pr"><div class="t">Data Intelligence</div><div class="s">It does the standing work you delegated</div></div>
+      <div class="pr"><div class="t">Data Context</div><div class="s">It's what every agent looks up &mdash; ours and yours</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ A1 · CONTEXT AND INSTRUCTIONS ============ -->
+<section class="slide light apx">
+  <div class="toprow"><p class="mark">ANOMALO</p><p class="sect">Appendix &middot; <b>Data Monitoring and Quality</b></p></div>
+  <div class="head-block">
+    <h1 class="t wide">It follows your runbooks. Not a generic one.</h1>
+    <p class="sub">Where First Responder's context and instructions live.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2">
+      <div class="panel">
+        <p class="eyebrow" style="color:var(--signal-ink)">Context</p>
+        <h3 class="ph" style="font-size:23px">What the agent knows</h3>
+        <ul class="pl" style="font-size:15px">
+          <li>Documentation at both the domain and the table level</li>
+          <li>The data itself, and column-level lineage across it</li>
+          <li>AIDA memories &mdash; everything the platform has already learned about your data</li>
+          <li>Prior incidents, and how they were resolved</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <p class="eyebrow" style="color:var(--brass-ink)">Instructions</p>
+        <h3 class="ph" style="font-size:23px">What the agent is told to do</h3>
+        <ul class="pl" style="font-size:15px">
+          <li>Define multiple agents, each applied at the notification-channel level</li>
+          <li>Override the general instructions at the individual check level</li>
+          <li>Incident properties you control &mdash; custom statuses, incident types and tags</li>
+        </ul>
+      </div>
+    </div>
+    <p class="rec-note" style="font-style:italic; color:var(--tdark-mute)">The trade-off we're managing here is flexibility versus clarity &mdash; enough control to encode how your team actually works, without a configuration surface nobody wants to maintain.</p>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ A2 · AUTOPILOT DIFFERENTIATORS ============ -->
+<section class="slide light apx">
+  <div class="toprow"><p class="mark">ANOMALO</p><p class="sect">Appendix &middot; <b>Data Intelligence</b></p></div>
+  <div class="head-block"><h1 class="t wide">Not a scheduler. Not First Responder.</h1></div>
+  <div class="body">
+    <div class="grid g2">
+      <div class="panel">
+        <h3 class="ph" style="font-size:22px">Triggers that watch your data, not the clock</h3>
+        <p class="pb" style="font-size:15.5px">Run when all the tables are fresh. Or run for each table, the moment <em>that</em> table is fresh &mdash; subject is the table, selection is the checks on it, one run per table. A cron job fires whether the data arrived or not. Autopilot waits.</p>
+      </div>
+      <div class="panel">
+        <h3 class="ph" style="font-size:22px">Reactive versus proactive</h3>
+        <p class="pb" style="font-size:15.5px; margin-bottom:9px"><strong style="color:var(--tdark)">First Responder</strong> answers failures you never asked for. That's why it sits in Monitoring and Quality.</p>
+        <p class="pb" style="font-size:15.5px"><strong style="color:var(--tdark)">Autopilot</strong> produces analysis you commissioned. That's why it sits in Data Intelligence.</p>
+      </div>
+    </div>
+    <div class="panel wash" style="margin-top:18px; padding:18px 24px">
+      <p class="pb" style="color:var(--tdark); font-size:15px">If someone asks why an agent triggered by freshness isn't a monitoring feature: the check that noticed is monitoring. What Autopilot adds is the written analysis on top of it.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+<!-- ============ A3 · NATIVE RESULT TABLES ============ -->
+<section class="slide light apx">
+  <div class="toprow"><p class="mark">ANOMALO</p><p class="sect">Appendix &middot; <b>Data Context</b></p></div>
+  <div class="head-block">
+    <h1 class="t wide">Anomalo's own data, without the pipeline</h1>
+    <p class="sub">Batch exporter results become native tables &mdash; context any agent can look up.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2">
+      <div class="panel flat">
+        <p class="eyebrow" style="color:var(--tdark-mute)">Today</p>
+        <ul class="pl" style="font-size:15px">
+          <li>Anomalo exports results to your object store</li>
+          <li>You build and maintain a pipeline into the warehouse</li>
+          <li>You model the tables yourself</li>
+          <li>Only then can you query your own quality history</li>
+        </ul>
+      </div>
+      <div class="panel invert">
+        <p class="eyebrow" style="color:var(--signal)">This quarter</p>
+        <ul class="pl" style="font-size:15px; color:var(--tlight)">
+          <li>Check results, incidents and metadata are native tables</li>
+          <li>Queryable from inside Anomalo on day one</li>
+          <li>No S3 hookup, no pipeline, no modelling work</li>
+          <li>Available to AIDA, Autopilot and your own reporting</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel wash" style="margin-top:18px; padding:18px 24px">
+      <p class="pb" style="color:var(--tdark); font-size:15px">First Responder, Autopilot and AIDA can all read these the same way they'd read a data catalog. That's why it's context, not reporting &mdash; and it's why one of the least glamorous items this quarter is also one of the most requested.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Confidential &mdash; do not duplicate or distribute without permission from Anomalo, Inc.</span><span></span></div>
+</section>
+
+</div>
+</div>
+
+<div id="script-src" hidden><section data-n="1"><b data-dur="0:25"></b><p class="say">Thanks for the time. This is the same deck we brought you in June &mdash; same title, deliberately.</p><p class="say">Twenty-five minutes: what we said we'd build, what actually shipped, and where the quarter goes. If you kept the June deck, keep it open. Some of this is me marking our own homework.</p></section><section data-n="2"><b data-dur="0:15"></b><p class="say">Housekeeping. This is confidential and it's directional &mdash; we ship weekly and we re-prioritize on what we hear from you, which is part of why I'm here. Nothing on the roadmap slide is a contractual commitment.</p></section><section data-n="3"><b data-dur="0:10"></b><p class="say">And the legal page. I'll let you read that on your own time.</p><p class="cuehd">Watch for</p><p class="cue">Ten seconds. Don't read it aloud.</p></section><section data-n="4"><b data-dur="1:15"></b><p class="say">The premise hasn't changed since June, so I'll be quick. Agents are doing the routine work of a data team already, and they don't just report &mdash; they act.</p><p class="say">Two consequences. Agents don't wait for clean data. A human who sees something odd stops and asks a question; an agent takes the number and moves on. Bad data goes from a slow embarrassment to a fast, silent one.</p><p class="say">And data quality stops being a reporting problem and becomes an AI infrastructure problem. Every agent you deploy inherits the trustworthiness of the data underneath it.</p><p class="say">Hold on to that first box. I'll come back to it at the end.</p><p class="cuehd">Watch for</p><p class="cue">The callback lands on slide 13. Flag it here so it pays off there.</p></section><section data-n="5"><b data-dur="2:30"></b><p class="say">Before I ask you to believe anything about this quarter, the scorecard on last quarter. Five things were on the June deck. Three shipped.</p><p class="say">High-cardinality entity checks &mdash; per-segment logic that holds up when an entity has thousands of segments.</p><p class="say">Lineage expansion, and it shipped bigger than we promised. We committed to column-level lineage for Snowflake and Databricks. You also have BigQuery, which was not in that commitment, plus an OpenLineage connector &mdash; so lineage across sources, not just inside one warehouse.</p><p class="say">Global AIDA shipped early. The June deck put it in Q3; it landed ahead of that.</p><p class="say">Two didn't ship. Co-Pilot Phase II is in build now, and the scope grew to include table configuration. First Responder is in build now, and it's materially bigger than that June slide described &mdash; a triage agent plus the entire incident layer around it. I'd rather show you that in a minute than defend the date.</p><p class="say">Three shipped, one early, one past spec. Two grew and are in flight. Those two lead this quarter.</p><p class="cuehd">Watch for</p><p class="cue">Say “early” and “past what we promised” out loud &mdash; they buy credibility for everything after this.</p><p class="cue">If pressed on the First Responder slip: it had to get cheap enough to run on every alert. Dogfooding drove per-run cost down roughly fiftyfold. Technical rooms only.</p></section><section data-n="6"><b data-dur="2:00"></b><p class="say">Same frame as June: three products, one platform. Seven things this quarter, and this is where they land.</p><p class="say">Monitoring and quality gets three &mdash; First Responder, Copilot Phase II, and streaming connectors.</p><p class="say">Data intelligence gets Autopilot.</p><p class="say">And data context gets three: our own MCP server, MCP connectors, and native result tables.</p><p class="say">Two things worth flagging before we start. Not all of this is AI &mdash; the streaming work has nothing to do with agents. And we're going in that order, ending on data context, because that's where “one platform” stops being an architecture diagram and turns into something you can plug into.</p><p class="cuehd">Watch for</p><p class="cue">This is the map. Every slide from here carries its product in the top right corner, so nobody has to hold the structure in their head.</p></section><section data-n="7"><b data-dur="2:45"></b><p class="say">First Responder. The problem isn't that you don't have alerts &mdash; it's that a person has to be the first pair of eyes on every one. That's the job we're taking away.</p><p class="say">It judges first: is this real, how bad is it, where does it rank against the runbooks you've defined. It runs an initial investigation before it decides anything.</p><p class="say">Then it investigates properly &mdash; traces root cause using lineage, check history and live queries, and cross-references issues you've already resolved.</p><p class="say">Then it acts. Ignore it, if it's noise or a false positive. Escalate with the whole investigation attached, so the human starts where the agent finished. Or open the ServiceNow or Jira ticket itself.</p><p class="say">What's new since June is that all of it lands inside an incident. Twenty checks failing across six tables over three days because of one upstream problem is one incident, not twenty alerts &mdash; grouped using lineage and your documentation. Noise gets silenced and auto-resolved. Everything else gets routed to the right person.</p><p class="cuehd">Watch for</p><p class="cue">If asked about acting on the fix &mdash; re-run the pipeline, open a PR &mdash; hold it until slide 13, which is what makes it possible.</p></section><section data-n="8"><b data-dur="2:00"></b><p class="say">The question you should all be asking is what happens when it's wrong. Three answers.</p><p class="say">You can see what it silenced. A daily or weekly digest of every alert suppressed or re-routed, and in-app filtering by what the agent did. The failure mode we worry about most is an agent that gets too good at quieting things down &mdash; this is how you catch that before it costs you.</p><p class="say">You can override anything. Status, resolution, grouping. The rule we hold ourselves to: anything the agent can do to an incident, a human or an API call can undo.</p><p class="say">And it learns from the override. You comment with feedback, that becomes memory, the correction goes into the runbook. You are not having the same argument with it every week.</p><p class="say">Incidents also carry live links into Jira, ServiceNow and Linear. This has to work inside your incident process, not beside it.</p><p class="cuehd">Watch for</p><p class="cue">Enterprise and regulated buyers block here. Don't rush it even if you're running long.</p></section><section data-n="9"><b data-dur="2:00"></b><p class="say">The other half of the operational problem. Nearly every platform lead I've met has said some version of this to me: rolling out monitoring across ten thousand tables isn't a feature, it's a project, and we don't have the people for it.</p><p class="say">That's fair, and it's what Copilot Phase II is for.</p><p class="say">Table configuration through AIDA &mdash; describe in plain language how a table should be watched, which segments matter, what to ignore, how fresh it needs to be. AIDA configures it. No form per table.</p><p class="say">And bulk check creation and cloning &mdash; create or clone checks across many tables in one instruction.</p><p class="say">Copilot gets coverage on. First Responder keeps it quiet. Two halves of the same job &mdash; and this is June's Co-Pilot Phase II landing.</p></section><section data-n="10"><b data-dur="1:20"></b><p class="say">One more in monitoring, and this one has nothing to do with AI.</p><p class="say">Right now your detection floor is your load frequency. Data that arrives as a stream is only monitorable once it lands somewhere we can query. Hourly loads mean you can't know in under an hour. Overnight loads mean you find out tomorrow &mdash; and by then it's been read.</p><p class="say">This quarter we connect straight to the source: Kafka, Kinesis, Pub/Sub. Checks evaluated against the stream, over windows you define. And when one fails it raises the same incident and goes to the same First Responder.</p><p class="say">I'm flagging that this isn't an agent feature on purpose. It's infrastructure &mdash; and it's what decides whether the agents have anything current to look at.</p><p class="cuehd">Watch for</p><p class="cue">The “not everything is an agent” line is doing real work. A roadmap that's seven-for-seven AI reads as bandwagon; this one item makes the other six more credible.</p></section><section data-n="11"><b data-dur="2:20"></b><p class="say">Into data intelligence. Autopilot is the newest thing on this deck, so let me be concrete.</p><p class="say">There's work you'd delegate to a competent analyst if you had one spare. A report that goes out every week. An analysis that should run whenever the data lands. Autopilot is how you hand that over once and stop thinking about it.</p><p class="say">You define four things: what the agent looks at, which tables or checks or domains are in scope, whether you want one report or one per item, and what sets it off.</p><p class="say">So &mdash; a weekly quality report for every domain. Subject is quality results, selection is all the tables in that domain, one report per domain, Monday morning. The agent writes it.</p><p class="say">And this lands June's data intelligence promise, in June's own words: formatted recurring reports through conversation, iterate on templates with the agent, publish as HTML or slides. Conversational analytics and Global AIDA already shipped. That leaves natural-language dashboards as the one piece still to come.</p><p class="cuehd">Watch for</p><p class="cue">The data-aware trigger example &mdash; run the moment each table is fresh &mdash; is in the appendix. Pull it up for a technical room; it's the detail that lands with anyone who has fought cron against a late pipeline.</p></section><section data-n="12"><b data-dur="2:15"></b><p class="say">Data context. And this is the slide I'd most want you to remember.</p><p class="say">Everything so far lives inside Anomalo. This one is about the boundary.</p><p class="say">One protocol &mdash; MCP &mdash; implemented in both directions.</p><p class="say">Going right, we're a server. Your agents, whether that's Claude, Cursor or something you built internally, query Anomalo directly. They can ask whether the data is good before they use it.</p><p class="say">Going left, we're a client. Anomalo reads your systems: Confluence, your catalog, GitHub, your ticketing.</p><p class="say">Both arrows are on one slide because they're the same capability pointed in two directions. The same protocol that lets you consume Anomalo lets Anomalo consume you. That's the moment three products stop being three things that share a login and start being one platform plugged into your stack.</p><p class="cuehd">Watch for</p><p class="cue">Slow down. This lands here, after four concrete products, because by now the question in the room is “how does any of this know anything about my company?”</p></section><section data-n="13"><b data-dur="2:20"></b><p class="say">Concretely, in both directions.</p><p class="say">Ours to you: quality status on demand, so an agent can ask whether a dataset is healthy before it trains on it or reports on it. Documentation and lineage, callable. And Global AIDA, domain-scoped &mdash; worth saying that one isn't a promise, it's a capability that shipped this quarter, now reachable outside the product.</p><p class="say">Yours to us: wikis, for the business definitions nobody put in the warehouse. Catalogs, whatever you already treat as the source of truth. Code, so the agent can read the transformation that broke instead of only the symptom. Ticketing, so incidents live in the process your team already runs.</p><p class="say">Native result tables belong in this section too. Anomalo's own check results and incidents become queryable, so our agents and yours can look them up exactly the way they'd look up a catalog. No S3 pipeline required.</p><p class="say">And the payoff. Every agent in this deck gets better the day the left-hand side exists. Documentation written from your wiki instead of from column names. Triage that cites your runbook because it read your runbook. And remember how we opened &mdash; agents don't wait for clean data. This is the mechanism that fixes that: not a dashboard someone checks first, but a question your agent asks automatically, every time.</p><p class="cuehd">Watch for</p><p class="cue">If someone asks about the agent opening a PR to fix the code: it becomes reachable once the left-hand side exists. Say it's a direction, not a date.</p><p class="cue">Full native-result-tables detail is in the appendix if anyone wants the before-and-after.</p></section><section data-n="14"><b data-dur="2:20"></b><p class="say">Dates. Two caveats first. These are targets, not commitments &mdash; we ship weekly and we re-prioritize. And two items are carried over from June, First Responder and Copilot Phase II. They're marked as such. I'd rather flag that myself than have you find it.</p><p class="say">Monitoring and quality: First Responder and Copilot in September, streaming connectors in November.</p><p class="say">Data intelligence: Autopilot in October. And natural-language dashboards the quarter after &mdash; that's the last outstanding piece of the June vision.</p><p class="say">Data context: Anomalo MCP in October, MCP connectors and native result tables in November.</p><p class="say">The most useful thing you can do for me in the next few minutes is tell me which of these you'd want first, and which one you'd trade away. That ordering is not locked.</p><p class="cuehd">Watch for</p><p class="cue">REPLACE THE DATES before presenting &mdash; Sep/Oct/Nov 2026 are placeholders.</p><p class="cue">The closing ask is the point of the slide. Don't skip it to save a minute.</p></section><section data-n="15"><b data-dur="0:50"></b><p class="say">To land it.</p><p class="say">One platform, three products &mdash; same as June. What's different is that it's starting to drive. It handles the alert before you do. It does the standing work you delegated. And it connects to everything else you run.</p><p class="say">Every priority on that roadmap slide moved because a customer pushed on it. So the feedback genuinely matters, on the big initiatives and the small annoyances alike.</p><p class="say">What haven't I covered?</p><p class="cuehd">Watch for</p><p class="cue">End on the question. The answer is worth more than anything else you'll get in the room.</p></section><section data-n="16"><b data-dur="2:00"></b><p class="say">[Appendix &mdash; pull up if someone asks how the agent knows what matters at their company.]</p><p class="say">On the context side: documentation at the domain and table level, the data itself, column-level lineage, everything AIDA has already learned about your environment, and every incident you've previously resolved along with how.</p><p class="say">On the instruction side: you define agents, plural, applied per notification channel &mdash; so the team paged about revenue tables can have different judgment than the team watching marketing data. You can override at the individual check. And you control the incident vocabulary: your own statuses, types and tags.</p><p class="say">The tension we're managing is flexibility versus clarity. Enough control to encode how your team actually works, without a configuration surface nobody wants to own.</p><p class="cuehd">Watch for</p><p class="cue">This was in the main deck at 37 minutes. It's the best objection-handler you have for “it won't know what matters to us.”</p></section><section data-n="17"><b data-dur="2:00"></b><p class="say">[Appendix &mdash; pull up for a technical room, or if someone conflates Autopilot with scheduling.]</p><p class="say">Two separations worth making.</p><p class="say">First, this is not a scheduler. The triggers watch your data, not the clock. Run when all the tables are fresh, or run per table the moment that table is fresh. A cron job fires at nine whether the pipeline landed or not, and you get a confident report about data that isn't there. Autopilot waits.</p><p class="say">Second, this is not First Responder in a different hat. First Responder answers failures nobody asked for &mdash; that's why it's in monitoring and quality. Autopilot produces analysis you commissioned &mdash; that's why it's in data intelligence.</p><p class="cuehd">Watch for</p><p class="cue">If pressed on why a freshness-triggered agent isn't a monitoring feature: the check that noticed is monitoring. What Autopilot adds is the written analysis on top.</p></section><section data-n="18"><b data-dur="1:15"></b><p class="say">[Appendix &mdash; pull up if anyone asks about the batch exporter or querying their own quality history.]</p><p class="say">Today, if you want to query your own quality history, we export results to your object store and then you build a pipeline into your warehouse and model the tables yourself. Several of you have told me that's more work than it should be. You're right.</p><p class="say">This quarter those become native tables inside Anomalo. Check results, incidents, metadata &mdash; queryable on day one, no S3 hookup, no pipeline, no modelling.</p><p class="say">And the reason it sits in data context rather than reporting: First Responder, Autopilot and AIDA all read it the same way they'd read a data catalog. It's a lookup source, not a dashboard.</p><p class="cuehd">Watch for</p><p class="cue">Least glamorous item this quarter, one of the most requested. It has no main-deck slide by design.</p></section></div>
+
+<div class="zone l" id="zl" title="Previous slide"></div>
+<div class="zone r" id="zr" title="Next slide"></div>
+
+<div id="rail"><i id="railfill"></i></div>
+<div id="hud">
+  <button id="notesbtn" type="button">Script &middot; N</button>
+  <span id="count"></span>
+</div>
+<div id="notes"><h4>Script <span id="notesmeta"></span></h4><div id="notesbody"></div></div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage = document.getElementById('stage');
+  var rail = document.getElementById('railfill');
+  var count = document.getElementById('count');
+  var notes = document.getElementById('notes');
+  var notesBody = document.getElementById('notesbody');
+  var notesBtn = document.getElementById('notesbtn');
+  var notesMeta = document.getElementById('notesmeta');
+  var main = slides.filter(function(s){ return !s.classList.contains('apx'); });
+  var i = 0;
+
+  // stamp page numbers from position, so reordering slides can never desync them
+  var apxN = 0;
+  slides.forEach(function(s, k){
+    var cell = s.querySelector('.foot span:last-child');
+    if (!cell) return;
+    cell.textContent = s.classList.contains('apx')
+      ? 'A' + (++apxN)
+      : ('0' + (k + 1)).slice(-2);
+  });
+
+  function fit(){
+    var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+
+  function show(n){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function(s, k){ s.classList.toggle('on', k === i); });
+    var apx = slides[i].classList.contains('apx');
+    rail.style.width = (apx ? 100 : (i + 1) / main.length * 100) + '%';
+    count.textContent = apx
+      ? 'appendix ' + (i - main.length + 1) + ' / ' + (slides.length - main.length)
+      : (i + 1) + ' / ' + main.length;
+    var sec = document.querySelector('#script-src section[data-n="' + (i + 1) + '"]');
+    notesBody.innerHTML = sec ? sec.innerHTML : '<p>\u2014</p>';
+    var dur = sec && sec.querySelector('b[data-dur]');
+    notesMeta.textContent = (apx ? 'Appendix ' + (i - main.length + 1) : 'Slide ' + (i + 1))
+      + (dur ? '  \u00b7  ' + dur.getAttribute('data-dur') : '');
+    try { localStorage.setItem('anomalo-roadmap-slide', String(i)); } catch (e) {}
+  }
+
+  function toggleNotes(){
+    notes.classList.toggle('up');
+    try { localStorage.setItem('anomalo-roadmap-notes', notes.classList.contains('up') ? '1' : '0'); } catch (e) {}
+  }
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); show(i + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); show(0); }
+    else if (e.key === 'End') { e.preventDefault(); show(slides.length - 1); }
+    else if (e.key === 'n' || e.key === 'N') { toggleNotes(); }
+    else if (e.key === 'Escape') { notes.classList.remove('up'); }
+  });
+
+  document.getElementById('zl').addEventListener('click', function(){ show(i - 1); });
+  document.getElementById('zr').addEventListener('click', function(){ show(i + 1); });
+  notesBtn.addEventListener('click', toggleNotes);
+  window.addEventListener('resize', fit);
+
+  var start = 0, open = false;
+  try {
+    start = parseInt(localStorage.getItem('anomalo-roadmap-slide') || '0', 10) || 0;
+    open = localStorage.getItem('anomalo-roadmap-notes') === '1';
+  } catch (e) {}
+  if (open) notes.classList.add('up');
+  fit();
+  show(start);
+})();
+</script>
