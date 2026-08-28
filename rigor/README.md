@@ -36,8 +36,7 @@ routes to skills this port does not include.
 **The principles** (21 skills, `principle-*`). Laziness Protocol, Model the Domain, Type System
 Discipline, Boundary Discipline, Minimize Reader Load, Prove It Works, Fix Root Causes, Sequence
 Verifiable Units, Build the Lever, and the rest. Each states when it applies, why, and a
-falsifiable test question. All carry `disable-model-invocation: true`, so they load when cited or
-invoked by name rather than on every turn. Copied verbatim.
+falsifiable test question. Copied verbatim apart from one cross-reference rename.
 
 **`unslop`.** Thirty-one numbered AI-writing tells with a fix for each. Copied verbatim.
 
@@ -73,8 +72,15 @@ The **leaves** are 487 lines total and load only for the principles you actually
 The forcing function is a rule, not a mechanism: a citation must name the decision it changed. A
 principle named in a reply with no choice behind it means the leaf was never read.
 
-Every leaf carries `disable-model-invocation: true`, so nothing auto-fires. Without `/rigor-mode`
-citing them, the principles sit inert — that is by design, and it is why the router exists.
+**Nothing here auto-invokes.** All 30 skills carry `disable-model-invocation: true`, so none of
+them fires on its own, and none costs you context on a turn where you did not ask for it. They
+load when you invoke one by name or when `/rigor-mode` cites one.
+
+That is deliberate. Rigor is opt-in per session, a casual turn stays casual, and installing this
+collection changes nothing about how an agent behaves until someone types `/rigor-mode`. It also
+means the principles sit inert without the router, which is why the router exists.
+
+`unslop` and `epistemics` were auto-invocable in the first cut and were gated to match the rest.
 
 ## The caveat that matters
 

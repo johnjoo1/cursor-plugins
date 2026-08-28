@@ -1,6 +1,7 @@
 ---
 name: epistemics
 description: "Calibrate and phrase claims when the evidence is historical, fragmentary, or contradictory. Use when answering why code exists or was built a certain way, reconstructing history from commits, PRs, tickets, or docs, reporting findings from an investigation, or any time you are about to state a motivation you inferred rather than read. Also use when a question arrives with an assumption baked in."
+disable-model-invocation: true
 ---
 <!-- Adapted from pstack/skills/why/references/epistemics.md (pstack by Lauren Tan, MIT). Modified for Claude Code: see rigor/README.md. -->
 # Epistemics

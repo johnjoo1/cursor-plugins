@@ -1,6 +1,7 @@
 ---
 name: unslop
-description: Cut AI tells from any writing. Must always apply.
+description: "Cut AI tells from any writing. Apply to every prose surface you produce once invoked, including your reply. Use for /unslop, or when rigor-mode routes prose here."
+disable-model-invocation: true
 ---
 
 # Unslop

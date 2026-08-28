@@ -25,7 +25,10 @@ A step you choose not to do stays in the list with a one-line `skip: <reason>`. 
 - Long, autonomous, or multi-phase work, or any task the user steps away from to review later → a decision trail via the **decision-log** skill.
 - Before declaring done → **principle-prove-it-works**. Verify against the real artifact, not a proxy, a self-report, or "it compiles".
 
-Nothing auto-loads these. Cite one by name and read it in full before applying it.
+**Nothing in this collection auto-invokes.** Every skill here, principles included, carries
+`disable-model-invocation: true`. They load only when you invoke one by name or when this mode
+cites one. That is the point of the mode: rigor is opt-in per session, and a casual turn stays
+casual. Cite a skill by name and read it in full before applying it.
 
 ## Principles
 
