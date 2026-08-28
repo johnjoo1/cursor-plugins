@@ -1,66 +1,65 @@
-# Cursor plugins
+# cursor-plugins
 
-Official Cursor plugins for popular developer tools, frameworks, and SaaS products. Each plugin is a standalone directory at the repository root with its own `.cursor-plugin/plugin.json` manifest.
+A fork of [cursor/plugins](https://github.com/cursor/plugins) trimmed to one plugin, plus a port
+of its portable core to Claude Code.
 
-## Plugins
+## What's here
 
-| `name` | Plugin | Author | Category | `description` (from marketplace) |
-|:-------|:-------|:-------|:---------|:-------------------------------------|
-| `teaching` | [Teaching](teaching/) | Cursor | Utilities | Skill mapping, practice plans, and learning retrospectives. |
-| `continual-learning` | [Continual Learning](continual-learning/) | Cursor | Developer Tools | Incremental transcript-driven memory updates for AGENTS.md using high-signal bullet points only. |
-| `cursor-team-kit` | [Cursor Team Kit](cursor-team-kit/) | Cursor | Developer Tools | Internal team workflows for CI, code review, shipping, local automation, and verification. |
-| `thermos` | [Thermos](thermos/) | Cursor | Developer Tools | Thermo-nuclear branch review: deep security/correctness audits, harsh code-quality rubrics, parallel subagents, thermos orchestration, and optional merge-ready PR flows. |
-| `create-plugin` | [Create Plugin](create-plugin/) | Cursor | Developer Tools | Scaffold and validate new agent plugins. |
-| `ralph-loop` | [Ralph Loop](ralph-loop/) | Cursor | Developer Tools | Iterative self-referential AI loops using the Ralph Wiggum technique. |
-| `agent-compatibility` | [Agent Compatibility](agent-compatibility/) | Cursor | Developer Tools | CLI-backed repo compatibility scans plus agents that audit startup, validation, and docs against reality. |
-| `cli-for-agent` | [CLI for Agents](cli-for-agent/) | Cursor | Developer Tools | Patterns for designing CLIs that coding agents can run reliably: flags, help with examples, pipelines, errors, idempotency, dry-run. |
-| `pr-review-canvas` | [PR Review Canvas](pr-review-canvas/) | Cursor | Developer Tools | Render PR diffs as review canvases grouped by importance. |
-| `docs-canvas` | [Docs Canvas](docs-canvas/) | Cursor | Developer Tools | Render documentation as a navigable canvas. |
-| `cursor-sdk` | [Cursor SDK](cursor-sdk/) | Cursor | Developer Tools | Build apps, scripts, and automations with the TypeScript SDK. |
-| `orchestrate` | [Orchestrate](orchestrate/) | Cursor | Developer Tools | Fan large tasks out across parallel cloud agents with planners, workers, verifiers, and structured handoffs. |
-| `pstack` | [pstack](pstack/) | Lauren Tan | Developer Tools | if you want to go fast, go deep first. pstack helps you write less, but higher quality code. rigorous agent workflows you can parallelize with confidence. |
-| `gmail` | [Gmail](third_party/gmail/) | Cursor | Productivity | Search, read, draft, and manage email. |
-| `google-drive` | [Google Drive](third_party/google-drive/) | Cursor | Productivity | Search, read, create, and share files. |
-| `google-calendar` | [Google Calendar](third_party/google-calendar/) | Cursor | Productivity | Search events and schedule meetings. |
-| `gong` | [Gong](third_party/gong/) | Cursor | Integrations | Pull account summaries, deal insights, and call briefs. |
-| `salesforce` | [Salesforce](third_party/salesforce/) | Cursor | Integrations | Query, create, and update records in your org. |
-| `playwright` | [Playwright](third_party/playwright/) | Cursor | Integrations | Navigate, click, screenshot, and test in a real browser. |
-| `github` | [GitHub](third_party/github/) | Cursor | Integrations | Manage repos, issues, pull requests, and Actions. |
-| `ashby` | [Ashby](third_party/ashby/) | Cursor | Integrations | Search candidates, prep interviews, and manage pipeline tasks. |
-| `hubspot` | [HubSpot](third_party/hubspot/) | Cursor | Integrations | Search and update contacts, companies, deals, and tickets. |
-| `intercom` | [Intercom](third_party/intercom/) | Cursor | Integrations | Search conversations, contacts, and Help Center articles. |
-| `zoom` | [Zoom](third_party/zoom/) | Cursor | Integrations | Search meetings, pull transcripts, and work with Zoom Docs. |
-| `x` | [X](third_party/x/) | Cursor | Integrations | Search posts, read timelines, pull trends, and manage bookmarks. |
-| `clay` | [Clay](third_party/clay/) | Cursor | Integrations | Enrich people and companies, run AI research agents. |
-| `circleback` | [Circleback](third_party/circleback/) | Cursor | Integrations | Search meetings, transcripts, action items, and emails. |
-| `docusign` | [Docusign](third_party/docusign/) | Cursor | Integrations | Manage envelopes, templates, workflows, and agreements. |
-| `navan` | [Navan](third_party/navan/) | Cursor | Integrations | Query expenses, travel bookings, policies, and cards. |
-| `profound` | [Profound](third_party/profound/) | Cursor | Integrations | Track AI visibility, sentiment, and citations. |
-| `juicebox` | [Juicebox](third_party/juicebox/) | Cursor | Integrations | Query recruiting analytics, shortlists, and sourcing agents. |
-| `outreach` | [Outreach](third_party/outreach/) | Cursor | Integrations | Search sequences, prospects, and Kaia meetings. |
-| `amplemarket` | [Amplemarket](third_party/amplemarket/) | Cursor | Integrations | Search people and companies, enrich leads, run sequences. |
-Author values match each plugin’s `plugin.json` `author.name` (Cursor lists `plugins@cursor.com` in the manifest).
+| Directory | For | What it is |
+|:--|:--|:--|
+| [`pstack/`](pstack/) | Cursor | Lauren Tan's rigorous-engineering plugin: 44 skills, the `poteto-mode` router, and 22 playbooks. Unmodified from upstream. |
+| [`rigor/`](rigor/) | Claude Code | pstack's provider-agnostic core, ported. The 21 principles, `unslop`, and six reasoning skills. |
+
+Everything else from the upstream marketplace (the other 12 Cursor plugins and the 20 third-party
+integrations) has been removed. Recover any of them from git history, or from
+[upstream](https://github.com/cursor/plugins).
+
+## pstack, in Cursor
+
+```
+/plugin marketplace add johnjoo1/cursor-plugins
+/plugin install pstack
+```
+
+Then `/setup-pstack` to choose your models, and `/poteto-mode` at the start of any task that
+needs rigor. See [`pstack/README.md`](pstack/README.md) and the
+[guide](pstack/docs/guide/README.md).
+
+## rigor, in Claude Code
+
+These are plain skills. No plugin manifest, no install command.
+
+```bash
+cp -r rigor/skills/* ~/.claude/skills/
+```
+
+The port drops what only works in Cursor (Graphite stacking, bugbot, cloud agents, transcript
+mining, the `.mdc` model-config rule) and rewrites the multi-model fan-out for Claude Code's
+`Agent` tool. One caveat carries through the whole thing: pstack's review skills derive their
+signal from *cross-vendor* model diversity, which Claude subagents cannot provide, so
+same-family agreement is weaker evidence than the original rubric assumes. Each affected skill
+says so. See [`rigor/README.md`](rigor/README.md) for the full list of changes, the known
+limitations, and the optional cross-vendor reviewer.
 
 ## Repository structure
 
-This is a multi-plugin marketplace repository. The root `.cursor-plugin/marketplace.json` lists all plugins, and each plugin has its own manifest:
-
 ```
-plugins/
+.
 ├── .cursor-plugin/
-│   └── marketplace.json       # Marketplace manifest (lists all plugins)
-├── plugin-name/
-│   ├── .cursor-plugin/
-│   │   └── plugin.json        # Per-plugin manifest
-│   ├── skills/                # Agent skills (SKILL.md with frontmatter)
-│   ├── rules/                 # Cursor rules (.mdc files)
-│   ├── mcp.json               # MCP server definitions
-│   ├── README.md
-│   ├── CHANGELOG.md
-│   └── LICENSE
-└── ...
+│   └── marketplace.json    # Cursor marketplace manifest (lists pstack)
+├── pstack/
+│   └── .cursor-plugin/
+│       └── plugin.json     # per-plugin manifest
+├── rigor/
+│   └── skills/             # Claude Code skills, copied to ~/.claude/skills/
+├── schemas/                # JSON schemas for the manifests
+└── scripts/
+    └── validate-plugins.mjs  # run by CI on manifest changes
 ```
+
+`rigor/` is deliberately absent from `marketplace.json`. It is not a Cursor plugin, so the
+validator does not inspect it.
 
 ## License
 
-MIT
+MIT. `pstack/` and `rigor/` each carry their own LICENSE with Lauren Tan's copyright.
