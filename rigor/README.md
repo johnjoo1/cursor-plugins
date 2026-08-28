@@ -27,6 +27,12 @@ and it loads as a plugin in place. Nothing needs restructuring.
 
 ## What's here
 
+**`rigor-mode`.** The router, and the thing that makes the rest fire. Carries an inline index of
+all 21 principles with their trigger conditions, plus routing rules for the other skills, the
+autonomy posture, and the reply and comment style rules. Invoke `/rigor-mode` at the start of a
+task that needs care. Rebuilt from pstack's `poteto-mode`, minus its 22 playbooks and the ten
+routes to skills this port does not include.
+
 **The principles** (21 skills, `principle-*`). Laziness Protocol, Model the Domain, Type System
 Discipline, Boundary Discipline, Minimize Reader Load, Prove It Works, Fix Root Causes, Sequence
 Verifiable Units, Build the Lever, and the rest. Each states when it applies, why, and a
@@ -56,6 +62,19 @@ leakage, temporal decomposition, pass-through method) and a rationale template.
 
 **`decision-log`.** An append-only TSV trail for long or unattended runs, one row per decision,
 evidence as a pointer rather than prose. Was `show-me-your-work` upstream.
+
+## How the principles load
+
+Two tiers, inherited from pstack. `rigor-mode` carries a ~39-line **index** naming all 21
+principles and the condition each applies to; that is always in context once the mode is invoked.
+The **leaves** are 487 lines total and load only for the principles you actually apply. Roughly
+12x compression, so you always know which principle is relevant without paying for all of them.
+
+The forcing function is a rule, not a mechanism: a citation must name the decision it changed. A
+principle named in a reply with no choice behind it means the leaf was never read.
+
+Every leaf carries `disable-model-invocation: true`, so nothing auto-fires. Without `/rigor-mode`
+citing them, the principles sit inert — that is by design, and it is why the router exists.
 
 ## The caveat that matters
 
@@ -135,8 +154,8 @@ the codebase, rather than a bare completion endpoint. That would close the gap f
 fan-out; its epistemics reference is here, its investigators are not), `reflect` and `recall`
 (both read Cursor transcript paths), `setup-pstack` (writes a Cursor `.mdc` rule), `how`,
 `figure-it-out`, the `automations/benny/` subtree, and the shipping / autopilot / babysit
-playbooks (Graphite and bugbot). `poteto-mode` itself is not ported; these skills stand alone and
-are invoked directly.
+playbooks (Graphite and bugbot). pstack's 22 playbooks are not ported; they assume Graphite stacking and
+bugbot. `rigor-mode` replaces `poteto-mode` as the router, without them.
 
 `architect` Phase A upstream delegates grounding to `how`. Since `how` isn't here, the ported
 version states the grounding requirement in prose instead.
